@@ -47,6 +47,7 @@ def available() -> dict[str, str]:
 
 
 def resolve(name: str) -> type[HarnessAdapter]:
+    """Find an adapter class by built-in name, `module:Class` path or entry point."""
     registry = available()
     if name in registry:
         return _load(registry[name])

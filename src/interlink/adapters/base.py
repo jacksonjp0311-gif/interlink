@@ -67,6 +67,8 @@ class InstanceView:
 
 @dataclass
 class RunOutcome:
+    """How a run ended: final state, exit code, session id and adapter detail."""
+
     state: str  # complete | failed | cancelled | timed_out | error
     exit_code: int | None = None
     detail: dict[str, Any] = field(default_factory=dict)
@@ -77,6 +79,8 @@ Spawner = Callable[..., "ManagedProcess"]
 
 @dataclass
 class RunContext:
+    """Everything an adapter needs for one run, plus `emit` for normalized events."""
+
     instance: InstanceView
     run_id: str
     prompt: str
@@ -88,6 +92,7 @@ class RunContext:
     spawn: Spawner
 
     def emit(self, type_: str, **fields: Any) -> None:
+        """Append a normalized event (``text``, ``tool_use``, ``result``, ...) to the run log."""
         self.log.emit(type_, **fields)
 
 
@@ -129,19 +134,23 @@ class HarnessAdapter(ABC):
         """
 
     def stop(self, instance: InstanceView) -> dict[str, Any]:
+        """Release anything ``start`` created. Process trees are killed by the engine."""
         return {}
 
     # -- helpers -------------------------------------------------------------------------
 
     @staticmethod
     def which(command: str) -> str | None:
+        """Locate an executable on PATH, like ``shutil.which``."""
         return shutil.which(command)
 
     @staticmethod
     def check(name: str, ok: bool, detail: str = "") -> dict[str, Any]:
+        """Build one ``doctor`` check entry."""
         return {"name": name, "ok": bool(ok), "detail": detail}
 
     def describe(self) -> dict[str, Any]:
+        """Name, adapter, kind and summary as shown by ``interlink harnesses``."""
         return {
             "name": self.name,
             "adapter": self.options.adapter,

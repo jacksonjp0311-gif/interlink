@@ -422,7 +422,7 @@ class PegasusAdapter(HarnessAdapter):
 
                 checks.append(self.check("pywin32", True))
             except ImportError:
-                checks.append(self.check("pywin32", False, "pip install 'interlink-mcp[windows]'"))
+                checks.append(self.check("pywin32", False, "pip install pywin32"))
         else:
             checks.append(self.check("channel", True, "POSIX uses the Unix-socket test channel"))
         return {"ok": all(c["ok"] for c in checks), "checks": checks}

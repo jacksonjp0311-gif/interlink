@@ -26,7 +26,13 @@ from typing import Any, ClassVar
 
 from pydantic import Field
 
-from interlink.adapters.base import AdapterOptions, HarnessAdapter, InstanceView, RunContext
+from interlink.adapters.base import (
+    AdapterOptions,
+    HarnessAdapter,
+    InstanceView,
+    RunContext,
+    RunOutcome,
+)
 from interlink.adapters.command import CommandAdapter, CommandOptions, _json_object
 from interlink.sandbox import Workspace
 
@@ -114,7 +120,7 @@ class HermesAdapter(CommandAdapter):
         else:
             ctx.emit("raw", data=value)
 
-    def classify(self, exit_code: int | None, reason: str, ctx: RunContext):  # type: ignore[override]
+    def classify(self, exit_code: int | None, reason: str, ctx: RunContext) -> RunOutcome:
         outcome = super().classify(exit_code, reason, ctx)
         if exit_code == 130 and reason == "exited":
             outcome.state = "cancelled"

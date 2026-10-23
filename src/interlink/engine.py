@@ -57,6 +57,8 @@ class InterlinkError(Exception):
 
 @dataclass
 class Run:
+    """One prompt delivered to an instance."""
+
     id: str
     log: RunLog
     prompt_sha256: str
@@ -68,6 +70,7 @@ class Run:
     thread: threading.Thread | None = None
 
     def record(self) -> dict[str, Any]:
+        """The run as stored in ``instance.json``."""
         return {
             "id": self.id,
             "state": self.log.state,
@@ -83,6 +86,8 @@ class Run:
 
 @dataclass
 class Instance:
+    """A launched harness and its private workspace."""
+
     view: InstanceView
     adapter: HarnessAdapter
     label: str
@@ -97,14 +102,18 @@ class Instance:
 
     @property
     def id(self) -> str:
+        """The instance id."""
         return self.view.id
 
     @property
     def workspace(self) -> Workspace:
+        """The instance's workspace on disk."""
         return self.view.workspace
 
 
 class Engine:
+    """Launches, drives and cleans up harness instances. Thread-safe."""
+
     def __init__(self, config: Config, state_root: Path | None = None) -> None:
         self.config = config
         self.root = (state_root or config.state_root).expanduser().resolve()
@@ -253,6 +262,7 @@ class Engine:
     # == tools ============================================================================
 
     def harnesses(self, check: bool = True) -> dict[str, Any]:
+        """Configured harnesses, with readiness checks when ``check`` is true."""
         items = []
         for adapter in self.config.harnesses.values():
             item = adapter.describe()
@@ -276,6 +286,7 @@ class Engine:
         label: str | None = None,
         request_id: str | None = None,
     ) -> dict[str, Any]:
+        """Create an instance: fresh workspace, optional project copy and seed files."""
         body = {"harness": harness, "project": project, "files": files, "label": label}
         return self._idempotent(
             request_id, "launch", body, None, partial(self._launch, harness, project, files, label)
@@ -386,6 +397,7 @@ class Engine:
         wait_s: float = 0,
         request_id: str | None = None,
     ) -> dict[str, Any]:
+        """Start a run in the background and return its id (optionally waiting ``wait_s``)."""
         body = {
             "instance_id": instance_id,
             "prompt_sha256": sha256_text(prompt),
@@ -565,6 +577,7 @@ class Engine:
         limit: int = 64,
         wait_s: float = 0,
     ) -> dict[str, Any]:
+        """Page through a run's events from ``after``, long-polling up to ``wait_s``."""
         limit = max(1, min(int(limit), 256))
         wait_s = max(0.0, min(float(wait_s), 60.0))
         record = self._disk_record(instance_id)
@@ -610,6 +623,7 @@ class Engine:
     def cancel(
         self, instance_id: str, run_id: str | None = None, *, request_id: str | None = None
     ) -> dict[str, Any]:
+        """Kill the running prompt's whole process tree."""
         body = {"instance_id": instance_id, "run_id": run_id}
         return self._idempotent(
             request_id, "cancel", body, instance_id, partial(self._cancel, instance_id, run_id)
@@ -637,6 +651,7 @@ class Engine:
     def stop(
         self, instance_id: str, *, discard: bool = False, request_id: str | None = None
     ) -> dict[str, Any]:
+        """Stop an instance; ``discard`` also deletes its workspace."""
         body = {"instance_id": instance_id, "discard": discard}
         return self._idempotent(
             request_id, "stop", body, instance_id, partial(self._stop, instance_id, discard)
@@ -683,6 +698,7 @@ class Engine:
         }
 
     def inspect(self, instance_id: str | None = None) -> dict[str, Any]:
+        """One instance in detail, or a summary of all of them."""
         if instance_id is None:
             items = []
             for path in sorted((self.root / "instances").glob("*/instance.json")):
@@ -746,6 +762,7 @@ class Engine:
     def files(
         self, instance_id: str, path: str | None = None, *, max_bytes: int = FILE_READ_DEFAULT
     ) -> dict[str, Any]:
+        """List changed files against the seed snapshot, or read one confined file."""
         self._disk_record(instance_id)
         workspace = Workspace(self.root / "instances" / instance_id)
         max_bytes = max(1, min(int(max_bytes), FILE_READ_MAX))
@@ -802,6 +819,7 @@ class Engine:
         include_transcript: bool = False,
         max_bytes: int = EVIDENCE_DEFAULT,
     ) -> dict[str, Any]:
+        """Export a redacted, hash-chained evidence bundle and record its digest."""
         max_bytes = max(EVIDENCE_MIN, min(int(max_bytes), EVIDENCE_MAX))
         record = self._disk_record(instance_id)
         workspace = Workspace(self.root / "instances" / instance_id)
@@ -909,6 +927,7 @@ class Engine:
     # == lifecycle ========================================================================
 
     def cleanup(self, *, include_orphaned: bool = True, older_than_s: float = 0) -> dict[str, Any]:
+        """Delete workspaces of stopped (and optionally orphaned) instances."""
         removed = []
         now = time.time()
         for path in sorted((self.root / "instances").glob("*/instance.json")):
