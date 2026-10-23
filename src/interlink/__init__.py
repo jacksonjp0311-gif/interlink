@@ -6,7 +6,7 @@ instances of an agent harness, prompts them, watches what they do, and keeps an
 evidence trail you can verify afterwards.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 SCHEMA = "interlink/1"
 
 __all__ = ["SCHEMA", "__version__"]

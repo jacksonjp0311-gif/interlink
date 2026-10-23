@@ -6,6 +6,25 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-23
+
+First release with CI green on Linux, macOS and Windows.
+
+### Fixed
+- Files are written byte-exact on every OS. Seed files, prompt files, files received
+  from a peer and the mock agent's output no longer gain CRLF line endings on Windows,
+  so file hashes and evidence match across platforms. Files you send are read without
+  newline translation, and JSONL logs always use LF.
+- Peer host: `task_finished` is written to the audit log before the result becomes
+  visible to the requester (previously a fast requester or a crash could see a finished
+  task the log had not recorded yet).
+- `interlink share` flushes its startup banner, so it appears immediately when output is
+  piped or logged.
+
+### Tests
+- Snippet tests accept native absolute paths; the share end-to-end test waits for the
+  banner (with generous CI timeouts) and reports the host's output on failure.
+
 ## [0.2.0] - 2026-10-23
 
 Peer connections: hand a sandboxed task to a friend's Interlink and get signed,
