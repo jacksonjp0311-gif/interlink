@@ -44,6 +44,7 @@ OptionalUuid = Annotated[
 
 
 def envelope(work: Callable[[], dict[str, Any]]) -> dict[str, Any]:
+    """Run ``work`` and wrap the outcome in the ``interlink/1`` reply envelope."""
     try:
         return {"schema": SCHEMA, "status": "complete", "data": work()}
     except InterlinkError as exc:
@@ -60,7 +61,10 @@ def envelope(work: Callable[[], dict[str, Any]]) -> dict[str, Any]:
         }
 
 
-def build_server(config: Config, engine: Engine | None = None) -> tuple[MCPServer, Engine]:
+def build_server(
+    config: Config, engine: Engine | None = None, *, peer_tools: bool = False
+) -> tuple[MCPServer, Engine]:
+    """Build the MCP server. ``peer_tools`` (opt-in) adds the three ``interlink_peer_*`` tools."""
     engine = engine or Engine(config)
 
     async def call(work: Callable[[], dict[str, Any]]) -> dict[str, Any]:
@@ -198,7 +202,101 @@ def build_server(config: Config, engine: Engine | None = None) -> tuple[MCPServe
         """Stop an instance (cancels any run, stops the harness). Optionally delete its workspace."""
         return await call(lambda: engine.stop(instance_id, discard=discard, request_id=request_id))
 
+    if peer_tools:
+        _add_peer_tools(server, config, call)
     return server, engine
+
+
+def _add_peer_tools(server: MCPServer, config: Config, call: Callable[..., Any]) -> None:
+    """Let the driving agent send tasks to paired friends. Never exposes hosting controls."""
+    from interlink.peer.client import PeerCallError, PeerClient
+    from interlink.peer.crypto import Identity
+    from interlink.peer.protocol import ProtocolError
+    from interlink.peer.store import PeerBook, PeerError, check_separation, peer_home, peer_state
+
+    home, state = peer_home(), peer_state(config.state_root)
+    check_separation(home, state)
+
+    def client(peer: str) -> PeerClient:
+        try:
+            return PeerClient(Identity.load_or_create(home), PeerBook(home).get(peer), state)
+        except PeerError as exc:
+            raise InterlinkError("unknown_peer", str(exc)) from exc
+
+    def guarded(work: Callable[[], dict[str, Any]]) -> Callable[[], dict[str, Any]]:
+        def run() -> dict[str, Any]:
+            try:
+                return work()
+            except PeerCallError as exc:
+                held = exc.code in (
+                    "rate_limited",
+                    "concurrency_limit",
+                    "quota_exceeded",
+                    "unreachable",
+                    "not_finished",
+                )
+                raise InterlinkError(exc.code, exc.message, "held" if held else "refused") from exc
+            except ProtocolError as exc:  # the reply failed verification: never trust it
+                raise InterlinkError(exc.code, str(exc), "failed") from exc
+            except PeerError as exc:
+                raise InterlinkError("peer_error", str(exc)) from exc
+
+        return run
+
+    @server.tool(structured_output=True)
+    async def interlink_peers() -> dict[str, Any]:
+        """List paired friends you can send tasks to (name, fingerprint, url)."""
+        return await call(
+            lambda: {
+                "peers": [
+                    {
+                        "name": p.name,
+                        "fingerprint": p.fingerprint,
+                        "url": p.url,
+                        "revoked": p.revoked,
+                    }
+                    for p in PeerBook(home).all()
+                ]
+            }
+        )
+
+    @server.tool(structured_output=True)
+    async def interlink_peer_send(
+        peer: Annotated[str, Field(max_length=32, description="Peer name from interlink_peers.")],
+        harness: Annotated[str, Field(max_length=64, description="Harness the peer allows you.")],
+        prompt: Annotated[str, Field(min_length=1, max_length=200_000)],
+        files: Annotated[
+            dict[str, str] | None, Field(description="Text files to seed: {relative path: text}.")
+        ] = None,
+        timeout_s: Annotated[float | None, Field(gt=0, le=3600)] = None,
+        task_id: OptionalUuid = None,
+    ) -> dict[str, Any]:
+        """Send a sandboxed task to a friend's Interlink. Poll interlink_peer_result for the answer."""
+        return await call(
+            guarded(
+                lambda: client(peer).submit(
+                    harness, prompt, files, timeout_s=timeout_s, task_id=task_id
+                )
+            )
+        )
+
+    @server.tool(structured_output=True)
+    async def interlink_peer_result(
+        peer: Annotated[str, Field(max_length=32)], task_id: Uuid
+    ) -> dict[str, Any]:
+        """Status of a task you sent; once finished, the signature-verified result statement."""
+
+        def work() -> dict[str, Any]:
+            c = client(peer)
+            status = c.status(task_id)
+            if not status.get("result_ready"):
+                return {"status": status, "result": None}
+            return {"status": status, "result": c.result(task_id)}
+
+        return await call(guarded(work))
+
+
+PEER_TOOL_NAMES = ("interlink_peers", "interlink_peer_send", "interlink_peer_result")
 
 
 TOOL_NAMES = (
@@ -215,5 +313,6 @@ TOOL_NAMES = (
 
 
 def serve(config: Config) -> None:
+    """Run the MCP server on stdio until the client disconnects."""
     server, _engine = build_server(config)
     server.run(transport="stdio")

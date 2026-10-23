@@ -14,3 +14,7 @@ htmlcov/
 .interlink/
 interlink.local.toml
 *.key
+*.pem
+*.crt
+*.zip
+.env

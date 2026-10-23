@@ -26,6 +26,7 @@ classifiers = [
   "Topic :: Software Development :: Testing",
 ]
 dependencies = [
+  "cryptography>=42",
   "mcp>=2.3,<3",
   "pydantic>=2.12,<3",
 ]

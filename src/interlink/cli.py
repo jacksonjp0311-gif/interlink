@@ -51,7 +51,7 @@ def cmd_serve(args: argparse.Namespace) -> int:
 
     config = _config(args)
     engine = Engine(config, Path(args.state_root) if args.state_root else None)
-    server, _ = build_server(config, engine)
+    server, _ = build_server(config, engine, peer_tools=args.peer_tools)
     server.run(transport="stdio")
     return 0
 
@@ -315,9 +315,13 @@ def parser() -> argparse.ArgumentParser:
     common.add_argument("--state-root", help="where workspaces and the ledger live")
     sub = root.add_subparsers(dest="command", required=True, metavar="COMMAND")
 
-    sub.add_parser("serve", parents=[common], help="run the stdio MCP server").set_defaults(
-        func=cmd_serve
+    serve_p = sub.add_parser("serve", parents=[common], help="run the stdio MCP server")
+    serve_p.add_argument(
+        "--peer-tools",
+        action="store_true",
+        help="also expose interlink_peer_* tools for sending tasks to paired friends",
     )
+    serve_p.set_defaults(func=cmd_serve)
 
     run = sub.add_parser(
         "run", parents=[common], help="one prompt, one throwaway instance, streamed"
@@ -369,6 +373,10 @@ def parser() -> argparse.ArgumentParser:
     shake = sub.add_parser("handshake", parents=[common], help="start a server and talk MCP to it")
     shake.add_argument("--json", action="store_true")
     shake.set_defaults(func=cmd_handshake)
+
+    from interlink.peer.cli import register
+
+    register(sub, common)
     return root
 
 
@@ -379,6 +387,14 @@ def main(argv: list[str] | None = None) -> int:
     except ConfigError as exc:
         print(f"interlink: config error: {exc}", file=sys.stderr)
         return 2
+    except Exception as exc:
+        from interlink.peer.cli import ERRORS
+        from interlink.peer.client import PeerCallError
+
+        if isinstance(exc, (*ERRORS, PeerCallError)):
+            print(f"interlink: {exc}", file=sys.stderr)
+            return 2
+        raise
 
 
 if __name__ == "__main__":
