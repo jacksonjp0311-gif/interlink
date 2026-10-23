@@ -152,7 +152,7 @@ def _pump(
     max_chars: int,
     scrub: Callable[[str], str] | None,
 ) -> None:
-    handle = open(log, "a", encoding="utf-8") if log else None  # noqa: SIM115 - closed below
+    handle = open(log, "a", encoding="utf-8", newline="\n") if log else None  # noqa: SIM115 - closed below
     try:
         for raw in iter(stream.readline, b""):
             line = raw.decode("utf-8", "replace").rstrip("\r\n")

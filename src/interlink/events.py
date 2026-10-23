@@ -80,7 +80,7 @@ class RunLog:
                 **self.redactor.scrub_value(_bound(fields)),
             }
             self.events.append(event)
-            with open(self.path, "a", encoding="utf-8") as handle:
+            with open(self.path, "a", encoding="utf-8", newline="\n") as handle:
                 handle.write(json.dumps(event, ensure_ascii=False) + "\n")
             self._changed.notify_all()
             return event

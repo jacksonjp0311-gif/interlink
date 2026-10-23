@@ -67,7 +67,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         rel, sep, local = item.partition("=")
         if not sep:
             raise SystemExit(f"--file expects REL=LOCAL_PATH, got {item!r}")
-        files[rel] = Path(local).read_text(encoding="utf-8")
+        files[rel] = Path(local).read_bytes().decode("utf-8")
     try:
         launched = engine.launch(
             args.harness, project=args.project, files=files or None, label="cli run"

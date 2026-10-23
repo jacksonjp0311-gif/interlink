@@ -318,7 +318,7 @@ class AuditLog:
         with self._lock:
             body = {"seq": self._seq + 1, "at": round(time.time(), 3), "event": event, **data}
             entry = {**body, "prev": self._head, "hash": chain_hash(self._head, body)}
-            with self.path.open("a", encoding="utf-8") as handle:
+            with self.path.open("a", encoding="utf-8", newline="\n") as handle:
                 handle.write(json.dumps(entry, sort_keys=True) + "\n")
                 handle.flush()
                 os.fsync(handle.fileno())

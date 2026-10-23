@@ -54,7 +54,7 @@ def main(argv: list[str] | None = None) -> int:
         return 3
     session = state.get("session_id") or str(uuid.uuid4())
     turn = int(state.get("turn", 0)) + 1
-    state_file.write_text(json.dumps({"session_id": session, "turn": turn}))
+    state_file.write_bytes(json.dumps({"session_id": session, "turn": turn}).encode("utf-8"))
     emit("status", event="init", session_id=session, turn=turn, agent="mock")
 
     code = 0
@@ -70,7 +70,7 @@ def main(argv: list[str] | None = None) -> int:
             emit("tool_use", tool="write_file", input={"path": path})
             target = Path(path)
             target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_text(content + "\n", encoding="utf-8")
+            target.write_bytes((content + "\n").encode("utf-8"))
             emit("tool_result", tool="write_file", ok=True, bytes=len(content) + 1)
         elif command == "read":
             emit("tool_use", tool="read_file", input={"path": rest})

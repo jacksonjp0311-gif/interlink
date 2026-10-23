@@ -456,7 +456,7 @@ class Engine:
             run_id = str(uuid.uuid4())
             run_dir = instance.workspace.run_dir(run_id)
             prompt_file = run_dir / "prompt.txt"
-            prompt_file.write_text(prompt, encoding="utf-8")
+            prompt_file.write_bytes(prompt.encode("utf-8"))
             log = RunLog(run_dir / "events.jsonl", instance.redactor)
             run = Run(run_id, log, sha256_text(prompt), timeout)
             instance.runs[run_id] = run

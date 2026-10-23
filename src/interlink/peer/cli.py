@@ -304,7 +304,7 @@ def _save_files(statement: dict[str, Any], out_dir: str) -> list[str]:
             print(f"  skipped unsafe path from host: {rel[:80]!r}", file=sys.stderr)
             continue
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(item["text"], encoding="utf-8")
+        target.write_bytes(item["text"].encode("utf-8"))  # exactly the bytes that were hashed
         written.append(rel)
     return written
 
@@ -340,7 +340,7 @@ def cmd_send(args: argparse.Namespace) -> int:
     files = {}
     for spec in args.file or []:
         rel, _, local = spec.partition("=")
-        files[rel] = Path(local or rel).read_text(encoding="utf-8")
+        files[rel] = Path(local or rel).read_bytes().decode("utf-8")
     status = client.submit(args.harness, prompt, files, timeout_s=args.timeout)
     print(f"sent task {status['task_id']} ({status['state']})", file=sys.stderr)
     if args.no_wait:

@@ -148,13 +148,13 @@ class Workspace:
         return {"files": files, "bytes": total}
 
     def seed_files(self, files: Mapping[str, str]) -> int:
-        """Write small text fixtures (relative path -> content) into ``work/``."""
+        """Write small text fixtures (relative path -> content) into ``work/``, byte for byte."""
         for relative, content in files.items():
             if len(content.encode("utf-8")) > MAX_SEED_FILE:
                 raise SecurityError(f"seed file too large: {relative}")
             target = confine(relative, self.work)
             target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_text(content, encoding="utf-8")
+            target.write_bytes(content.encode("utf-8"))  # byte-exact on every OS
         return len(files)
 
     # -- observation ---------------------------------------------------------------------

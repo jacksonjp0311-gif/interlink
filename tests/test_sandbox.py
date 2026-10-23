@@ -90,3 +90,10 @@ def test_destroy_refuses_outside_state_root(tmp_path: Path) -> None:
         ws.destroy(tmp_path / "other")
     ws.destroy(tmp_path / "state")
     assert not ws.root.exists()
+
+
+def test_seed_files_are_byte_exact(tmp_path: Path) -> None:
+    ws = make(tmp_path)
+    ws.seed_files({"lf.txt": "a\nb\n", "crlf.txt": "a\r\nb\r\n"})
+    assert (ws.work / "lf.txt").read_bytes() == b"a\nb\n"  # no CRLF on Windows
+    assert (ws.work / "crlf.txt").read_bytes() == b"a\r\nb\r\n"  # and no LF elsewhere
