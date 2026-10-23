@@ -47,3 +47,10 @@ source tree, links `data/` and `runtime/` into a disposable profile, verifies a 
 digest of the source tree before boot, authenticates every request with a per-launch
 token, enforces leases (1-60 s TTL) and request deadlines, and keeps inference off unless
 `inference = true`.
+
+## Peer tasks
+
+Tasks from paired friends (`interlink share`) go through everything above, plus a
+sanitized config (no `pass_env`, `secrets` or `env`, always a private HOME), a per-peer
+allow-list and limits, signed requests and results, and an audit log. See
+[peers.md](peers.md) and the threat model in [SECURITY.md](SECURITY.md).

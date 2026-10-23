@@ -4,14 +4,14 @@
 
 <p align="center">
   <a href="https://github.com/jacksonjp0311-gif/interlink/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/jacksonjp0311-gif/interlink/actions/workflows/ci.yml/badge.svg"></a>
-  <img alt="Python" src="https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-3776ab">
-  <img alt="MCP" src="https://img.shields.io/badge/MCP-stdio-7c3aed">
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-22c55e">
+  <a href="pyproject.toml"><img alt="Python 3.11+" src="https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-3776ab"></a>
+  <a href="https://modelcontextprotocol.io"><img alt="MCP" src="https://img.shields.io/badge/MCP-stdio-7c3aed"></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-22c55e"></a>
 </p>
 
-# Interlink
+<h1 align="center">Interlink</h1>
 
-**Let one AI agent drive another, safely.**
+<p align="center"><b>Let one AI agent drive another, safely. Even on a friend's machine.</b></p>
 
 Interlink is a small MCP server. Plug it into **Claude Code**, **Codex** or any other MCP
 client, and that agent can launch *another* agent harness - **PEGASUS**, **Hermes Agent**,
@@ -20,7 +20,9 @@ it prompts, watch what it does, see which files it changed, and walk away with a
 tamper-evident evidence bundle.
 
 It doesn't matter which side is which. Claude can drive Codex, Codex can drive Hermes, a
-script can drive PEGASUS. Interlink is the cable in between.
+script can drive PEGASUS. Interlink is the cable in between. With
+[peer connections](#connect-with-a-friend), that cable can reach a friend's machine too,
+with signed requests, an allow-list, and evidence you can verify.
 
 ```text
 you ──► Claude Code ──(MCP)──► Interlink ──► Codex / Hermes / PEGASUS / your CLI
@@ -38,6 +40,7 @@ you ──► Claude Code ──(MCP)──► Interlink ──► Codex / Herme
 - [The tools](#the-tools)
 - [Configure your harnesses](#configure-your-harnesses)
 - [Add your own agent](#add-your-own-agent)
+- [Connect with a friend](#connect-with-a-friend)
 - [The CLI](#the-cli)
 - [Safety model](#safety-model)
 - [FAQ](#faq)
@@ -47,21 +50,26 @@ you ──► Claude Code ──(MCP)──► Interlink ──► Codex / Herme
 
 ## 60-second quickstart
 
-You need Python 3.11+. Nothing else - the built-in `mock` agent needs no keys or network.
+You need Python 3.11+ and git. Nothing else: the built-in `mock` agent needs no keys or
+network.
 
 ```bash
-pip install interlink-mcp          # or: uvx --from interlink-mcp interlink ...
-                                   # or, from a clone: pip install -e .
+git clone https://github.com/jacksonjp0311-gif/interlink && cd interlink
+python -m venv .venv && . .venv/bin/activate     # Windows: .venv\Scripts\activate
+pip install -e .
 
 interlink doctor                   # checks your install and every harness it can find
 interlink run mock "say hello from a sandbox
 write hello.txt hi there"
 ```
 
+> Interlink isn't on PyPI yet, so install it from a clone (or with
+> `pip install git+https://github.com/jacksonjp0311-gif/interlink`).
+
 You'll see the agent work in a fresh sandbox:
 
 ```text
-interlink: mock instance 6c25f35f in ~/.local/state/interlink/instances/6c25f35f-.../work
+interlink: mock instance 86377bb8 in ~/.local/state/interlink/instances/86377bb8-.../work
 hello from a sandbox
   -> write_file {"path": "hello.txt"}
   <- write_file ok
@@ -79,33 +87,31 @@ interlink run claude-code "Explain what this repo does in 3 bullets" --project .
 
 ## Plug it into Claude Code or Codex
 
-**Claude Code** - one command:
+Let Interlink print the config with the exact paths of *your* install:
 
 ```bash
-claude mcp add interlink -- uvx --from interlink-mcp interlink serve
+interlink snippet claude-code-cli    # a ready-to-run `claude mcp add ...` command
+interlink snippet claude-code        # a project-level .mcp.json
+interlink snippet codex              # a block for ~/.codex/config.toml
 ```
 
-…or commit a project-level `.mcp.json` ([example](examples/claude-code/.mcp.json)):
+**Claude Code**, run from the activated venv:
 
-```json
-{
-  "mcpServers": {
-    "interlink": { "command": "uvx", "args": ["--from", "interlink-mcp", "interlink", "serve"] }
-  }
-}
+```bash
+claude mcp add interlink -- "$(command -v interlink)" serve
 ```
 
-**Codex** - add to `~/.codex/config.toml` ([example](examples/codex/config.toml)):
+**Codex**: add this to `~/.codex/config.toml` ([example](examples/codex/config.toml)),
+using the `command` path that `interlink snippet codex` printed:
 
 ```toml
 [mcp_servers.interlink]
-command = "uvx"
-args = ["--from", "interlink-mcp", "interlink", "serve"]
+command = "/path/to/.venv/bin/interlink"
+args = ["serve"]
 tool_timeout_sec = 120
 ```
 
-`interlink snippet claude-code | claude-code-cli | codex` prints these with the exact
-paths of *your* install. Then just ask:
+Then just ask:
 
 > *"Use Interlink to launch codex on a copy of this repo, ask it to write tests for
 > `parser.py`, then show me the diff and the evidence."*
@@ -218,6 +224,68 @@ Need to parse a custom format or talk to a long-lived host? Subclass an adapter 
 `adapter = "my_module:MyAdapter"` or ship it as a plugin via the `interlink.adapters`
 entry point. See [docs/adapters.md](docs/adapters.md).
 
+## Connect with a friend
+
+Got a friend with a beefier machine or a harness you don't have? Hand them a task.
+Their Interlink runs it in a sandbox and sends back a **signed result**: the answer,
+the files the agent wrote, and proof of exactly what ran. Neither of you ever gets
+access to the other's machine, files or keys.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant A as Alice (requester)
+    participant B as Bob's interlink share
+    participant S as Throwaway sandbox
+    A->>B: signed task (harness, prompt, files)
+    Note over B: check signature, nonce, expiry,<br/>allow-list, quotas, sizes
+    B-->>A: 202 pending (signed)
+    Note over B: Bob runs: interlink peer approve <task>
+    B->>S: fresh workspace, private HOME,<br/>no host env, keys or files
+    S-->>B: events, changed files, evidence
+    A->>B: signed "result?"
+    B-->>A: result statement signed by Bob's key
+    Note over A: verify signature, task digest,<br/>hash chain, evidence and file hashes
+```
+
+**Pair once.** Each of you runs `interlink peer id` and swaps the invite code it prints.
+Read your fingerprints to each other over a call.
+
+```bash
+# Bob (the host): add Alice, allow one harness, start sharing
+interlink peer add alice IL1-...
+interlink peer allow alice mock
+interlink share                                   # 127.0.0.1:7464 until Ctrl-C
+
+# Alice (the requester): add Bob and send a task
+interlink peer add bob IL1-... --url http://127.0.0.1:7464
+interlink peer ping bob                           # verifies his key, shows what you may run
+interlink peer send bob mock "write answer.txt 42" --out ./from-bob
+
+# Bob, in another terminal, when the task shows up
+interlink peer pending
+interlink peer approve <task-id>
+```
+
+The `--url` above works on one machine. Between two machines, use an SSH tunnel
+(`ssh -N -L 7464:127.0.0.1:7464 bob-host`), a VPN, or `--bind` with TLS. See
+[docs/peers.md](docs/peers.md#reaching-each-other).
+
+**The safety model, in short:**
+
+| Layer | What it means |
+|-------|---------------|
+| **Off by default** | Nothing listens until you run `interlink share`. New peers can run *nothing* until you `peer allow` a harness, and every task waits for your approval unless you opt in per peer (`peer add --auto-approve` or `peer policy NAME --approval auto`). |
+| **Mutual auth** | Ed25519 keys (via [`cryptography`](https://cryptography.io)), pinned at pairing. Every request *and* response is signed, bound to its method, path and body, and protected by a nonce and an expiry against replay. Revocation is instant. |
+| **Least privilege** | A per-peer allow-list, quotas, rate limits, timeouts, and caps on concurrency and size. Inbound tasks get a fresh sandbox with **no host env, secrets, logins or files**, only what the requester sent. |
+| **Transport** | Loopback by default. Any other address requires TLS. |
+| **Evidence** | The host signs the result, which is bound to the exact task you sent. Both sides keep hash-chained, tamper-evident audit logs (`interlink peer audit --verify`). |
+
+Agents can send tasks too: `interlink serve --peer-tools` adds `interlink_peers`,
+`interlink_peer_send` and `interlink_peer_result`. Pairing and approval stay CLI-only,
+so an agent can't grant itself access. Full guide: [docs/peers.md](docs/peers.md).
+Threat model and limits: [docs/SECURITY.md](docs/SECURITY.md).
+
 ## The CLI
 
 | Command | What it does |
@@ -231,6 +299,10 @@ entry point. See [docs/adapters.md](docs/adapters.md).
 | `interlink init` | Write a starter `interlink.toml`. |
 | `interlink snippet <client>` | Print MCP config for `claude-code`, `claude-code-cli` or `codex`. |
 | `interlink handshake` | Start a server and talk real MCP to it - a one-shot self-test. |
+| `interlink share` | Let paired friends run allowed tasks on this machine (see above). |
+| `interlink peer id \| add \| list \| show \| allow \| policy \| revoke \| remove` | Your identity, and the friends you're paired with. |
+| `interlink peer ping \| send \| status \| result \| cancel` | Send tasks to a friend and verify the results. |
+| `interlink peer pending \| approve \| deny \| audit \| cert` | Host side: approvals, the audit log, a TLS cert for LAN sharing. |
 
 Prefer Python? [examples/drive_mock.py](examples/drive_mock.py) drives the server with
 the official MCP client in ~50 lines.
@@ -256,9 +328,10 @@ Interlink is designed so that "let an agent run an agent" is boring.
 
 ## FAQ
 
-**Does it work on Windows?** Yes - Windows, macOS and Linux. On Windows, install
-`interlink-mcp[windows]` for Job-object process-tree kills. The PEGASUS adapter is
-Windows-only (it speaks PEGASUS's named-pipe protocol).
+**Does it work on Windows?** It's built for Windows, macOS and Linux, and CI is set up for
+all three. On Windows, install with `pip install -e ".[windows]"` for Job-object
+process-tree kills. The PEGASUS adapter is Windows-only (it speaks PEGASUS's named-pipe
+protocol).
 
 **Do I need API keys?** Not for Interlink. Each harness uses its own login or key; you
 choose which env vars it may see with `secrets`.
@@ -276,6 +349,10 @@ read-only and reaps leftover harness processes it can prove are its own.
 
 **Is my prompt stored?** Its sha256 is in the evidence; the text lives only in the
 instance's run directory, which `discard` deletes.
+
+**Can my friend use my API keys?** No. Peer tasks run with a sanitized config: no
+`secrets`, no `pass_env`, no real HOME. Only harnesses that work without your
+credentials (or bring their own) are useful to peers.
 
 **How is this related to PEGASUS?** Interlink began as the instance-control layer inside
 PEGASUS. This package lifts it out, makes it harness-agnostic, and keeps a first-class

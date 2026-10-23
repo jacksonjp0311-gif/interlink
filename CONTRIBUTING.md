@@ -26,8 +26,10 @@ src/interlink/
   config.py      interlink.toml
   cli.py         the `interlink` command
   adapters/      mock, command, claude-code, codex, hermes, pegasus
+  peer/          peer connections: crypto, store, protocol, host, client, cli
   harnesses/     the scripted mock agent
 tests/
+  peerkit.py     two-person fixtures for the peer tests
   fakes/         fake Hermes CLI and fake PEGASUS host
   fixtures/      recorded Claude Code / Codex streams
 ```

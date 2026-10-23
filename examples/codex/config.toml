@@ -1,7 +1,9 @@
-# Append to ~/.codex/config.toml
+# Append to ~/.codex/config.toml.
+# `interlink snippet codex` prints this with the absolute path of your install,
+# which is more robust than relying on `interlink` being on Codex's PATH.
 [mcp_servers.interlink]
-command = "uvx"
-args = ["--from", "interlink-mcp", "interlink", "serve"]
+command = "interlink"
+args = ["serve"]
 startup_timeout_sec = 20
 tool_timeout_sec = 120
 # env = { INTERLINK_CONFIG = "/path/to/interlink.toml" }

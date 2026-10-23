@@ -90,3 +90,8 @@ One run at a time per instance; a second prompt while one is running is `held` w
 
 A new server reads old instances read-only (`not_owned`) and reaps orphaned harness
 processes it can positively identify as its own.
+
+## Peer protocol
+
+Peer connections between two Interlinks use a separate HTTP protocol,
+`interlink-peer/1`, documented in [peers.md](peers.md#wire-protocol).
