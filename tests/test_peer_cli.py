@@ -8,6 +8,7 @@ import os
 import socket
 import subprocess
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -19,6 +20,52 @@ from interlink.peer.cli import _save_files
 from interlink.server import PEER_TOOL_NAMES, TOOL_NAMES
 
 CONFIG = '[server]\nauto_detect = false\n\n[harness.mock]\nadapter = "mock"\n'
+
+
+# Generous: a cold macOS/Windows CI runner can take many seconds to import cryptography
+# and the MCP SDK in a fresh interpreter. Real hangs still fail, with the host's output.
+STARTUP_TIMEOUT = 90.0
+TASK_TIMEOUT = 60.0
+
+
+class _Lines:
+    """Collects a subprocess's output lines on a background thread."""
+
+    def __init__(self, proc: subprocess.Popen[str]) -> None:
+        self.lines: list[str] = []
+        self.cond = threading.Condition()
+        self.thread = threading.Thread(target=self._pump, args=(proc,), daemon=True)
+        self.thread.start()
+
+    def _pump(self, proc: subprocess.Popen[str]) -> None:
+        assert proc.stdout is not None
+        for line in proc.stdout:
+            with self.cond:
+                self.lines.append(line)
+                self.cond.notify_all()
+        with self.cond:
+            self.lines.append("")  # EOF marker
+            self.cond.notify_all()
+
+
+_READERS: dict[int, _Lines] = {}
+
+
+def share_output(proc: subprocess.Popen[str]) -> str:
+    reader = _READERS.get(proc.pid)
+    return "".join(reader.lines) if reader else ""
+
+
+def wait_for_line(proc: subprocess.Popen[str], needle: str, timeout: float) -> None:
+    """Block until ``proc`` prints ``needle``; fail fast (with its output) if it exits."""
+    reader = _READERS.setdefault(proc.pid, _Lines(proc))
+    deadline = time.monotonic() + timeout
+    with reader.cond:
+        while not any(needle in line for line in reader.lines):
+            assert "" not in reader.lines, f"process exited early:\n{''.join(reader.lines)}"
+            remaining = deadline - time.monotonic()
+            assert remaining > 0, f"no {needle!r} after {timeout:g}s:\n{''.join(reader.lines)}"
+            reader.cond.wait(min(remaining, 1.0))
 
 
 def free_port() -> int:
@@ -78,14 +125,7 @@ def test_pair_share_send_approve_revoke(
         text=True,
     )
     try:
-        deadline = time.monotonic() + 20
-        while True:
-            try:
-                socket.create_connection(("127.0.0.1", port), timeout=0.5).close()
-                break
-            except OSError:
-                assert time.monotonic() < deadline and share.poll() is None
-                time.sleep(0.1)
+        wait_for_line(share, "Interlink is sharing on", timeout=STARTUP_TIMEOUT)
 
         ping = alice.json(capsys, "peer", "ping", "bob", "--json")
         assert ping["harnesses"] == ["mock"] and ping["host"] == b_id["fingerprint"]
@@ -95,9 +135,14 @@ def test_pair_share_send_approve_revoke(
         pending = bob.json(capsys, "peer", "pending", "--json")
         assert [p["task_id"] for p in pending] == [task_id]
         assert bob("peer", "approve", task_id) == 0
-        deadline = time.monotonic() + 20
-        while alice.json(capsys, "peer", "status", "bob", task_id)["state"] != "complete":
-            assert time.monotonic() < deadline
+        deadline = time.monotonic() + TASK_TIMEOUT
+        while (
+            state := alice.json(capsys, "peer", "status", "bob", task_id)["state"]
+        ) != "complete":
+            assert state not in ("failed", "error", "denied", "expired", "cancelled"), state
+            assert time.monotonic() < deadline, (
+                f"task still {state!r}; host said:\n{share_output(share)}"
+            )
             time.sleep(0.2)
         out = tmp_path / "out"
         capsys.readouterr()
@@ -129,7 +174,7 @@ def test_audit_verify_fails_on_tamper(
     log = AuditLog(log_path)
     log.append("a")
     log.append("b")
-    log_path.write_text(log_path.read_text().replace('"a"', '"z"'))
+    log_path.write_bytes(log_path.read_bytes().replace(b'"a"', b'"z"'))
     assert bob("peer", "audit", "--verify") == 1
 
 
