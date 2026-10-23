@@ -1,0 +1,67 @@
+# interlink.toml - a fuller example. Copy it next to your project (or to
+# ~/.config/interlink/config.toml) and delete what you don't use.
+#
+# Every [harness.<name>] block becomes something an MCP client can launch with
+# interlink_launch(harness="<name>"). Children get ONLY the environment you name.
+
+[server]
+max_instances = 8          # live instances at once
+max_concurrent_runs = 4    # prompts running at once, across all instances
+max_run_timeout_s = 3600   # hard ceiling for any single prompt
+keep_workspaces = true     # keep stopped workspaces around for inspection
+auto_detect = true         # also offer hermes / claude / codex if they are on PATH
+
+# --- Always available: a scripted fake agent (no network, no keys) -----------
+[harness.mock]
+adapter = "mock"
+
+# --- Claude Code, headless -----------------------------------------------------
+[harness.claude]
+adapter = "claude-code"
+description = "Claude Code in a throwaway copy of the project"
+# model = "sonnet"
+permission_mode = "acceptEdits"          # what Claude may do without asking
+allowed_tools = ["Read", "Edit", "Write", "Bash(git diff:*)"]
+secrets = ["ANTHROPIC_API_KEY"]          # passed through AND redacted from transcripts
+isolate_home = false                     # true = fresh HOME (you must log in via API key)
+timeout_s = 900
+
+# --- OpenAI Codex CLI ----------------------------------------------------------
+[harness.codex]
+adapter = "codex"
+sandbox = "workspace-write"              # codex's own sandbox on top of Interlink's
+secrets = ["OPENAI_API_KEY"]
+isolate_home = false
+timeout_s = 900
+
+# --- Hermes Agent ---------------------------------------------------------------
+[harness.hermes]
+adapter = "hermes"
+# model = "anthropic/claude-sonnet-4"
+# provider = "openrouter"
+secrets = ["OPENROUTER_API_KEY"]
+timeout_s = 900
+
+# --- Any other CLI agent: one process per prompt ------------------------------
+# Placeholders: {prompt} {prompt_file} {workspace} {home} {run_id} {instance_id} {session_id}
+# With neither {prompt} nor {prompt_file} in argv, the prompt is written to stdin.
+[harness.aider]
+adapter = "command"
+description = "aider, one message per prompt"
+argv = ["aider", "--yes-always", "--no-git", "--message-file", "{prompt_file}"]
+output = "text"
+secrets = ["OPENAI_API_KEY", "ANTHROPIC_API_KEY"]
+
+# --- PEGASUS (Windows) ---------------------------------------------------------
+# Launches a PEGASUS build with its Interlink host in a disposable profile.
+# Point it at a DISPOSABLE copy of the source tree - never your working checkout.
+# [harness.pegasus]
+# adapter = "pegasus"
+# executable = 'D:\builds\pegasus\PEGASUS.exe'
+# source_root = 'D:\scratch\pegasus-src-copy'
+# inference = false                      # true lets prompts reach a model
+# [harness.pegasus.model]
+# id = "local"
+# name = "qwen2.5-coder"
+# path = 'D:\models\qwen2.5-coder.gguf'
+# endpoint = "http://127.0.0.1:8080"

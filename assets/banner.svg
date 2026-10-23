@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="400" viewBox="0 0 1280 400" role="img" aria-label="Interlink: drive any agent harness from any MCP client, in throwaway sandboxes with evidence">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="0.55" stop-color="#121a36"/>
+      <stop offset="1" stop-color="#1b1039"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.1"/>
+      <stop offset="0.5" stop-color="#38bdf8" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#a78bfa" stop-opacity="0.15"/>
+    </linearGradient>
+    <linearGradient id="beamR" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a78bfa" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#f472b6" stop-opacity="0.2"/>
+    </linearGradient>
+    <radialGradient id="core" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e0f2fe"/>
+      <stop offset="0.35" stop-color="#38bdf8"/>
+      <stop offset="1" stop-color="#6d28d9" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#ffffff" stroke-opacity="0.04"/>
+    </pattern>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <style>
+      .t { font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+      .m { font-family: "JetBrains Mono", "Cascadia Code", "SFMono-Regular", Consolas, monospace; }
+      .chip { fill: #0f172a; stroke-width: 1.5; }
+      .flow { stroke-dasharray: 6 10; animation: dash 1.6s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -32; } }
+      @keyframes pulse { 0%,100% { opacity: .55 } 50% { opacity: 1 } }
+      .pulse { animation: pulse 2.4s ease-in-out infinite; }
+    </style>
+  </defs>
+
+  <rect width="1280" height="400" fill="url(#bg)"/>
+  <rect width="1280" height="400" fill="url(#grid)"/>
+
+  <!-- title block -->
+  <text x="64" y="104" class="t" font-size="64" font-weight="800" fill="#f8fafc" letter-spacing="-1">Interlink</text>
+  <text x="66" y="142" class="t" font-size="22" fill="#cbd5e1">Drive any agent harness</text>
+  <text x="66" y="170" class="t" font-size="22" fill="#cbd5e1">from any MCP client.</text>
+  <text x="66" y="202" class="t" font-size="15" fill="#94a3b8">Throwaway sandboxes · env allow-list · evidence</text>
+  <g class="m" font-size="14">
+    <rect x="64" y="226" width="318" height="34" rx="8" fill="#020617" stroke="#334155"/>
+    <text x="80" y="248" fill="#38bdf8">$</text>
+    <text x="96" y="248" fill="#e2e8f0">uvx --from interlink-mcp interlink</text>
+  </g>
+
+  <!-- left: MCP clients -->
+  <g class="t" font-size="15" font-weight="600">
+    <rect class="chip" x="520" y="96" width="160" height="40" rx="10" stroke="#38bdf8"/>
+    <text x="600" y="121" text-anchor="middle" fill="#e0f2fe">Claude Code</text>
+    <rect class="chip" x="520" y="180" width="160" height="40" rx="10" stroke="#38bdf8"/>
+    <text x="600" y="205" text-anchor="middle" fill="#e0f2fe">Codex</text>
+    <rect class="chip" x="520" y="264" width="160" height="40" rx="10" stroke="#38bdf8"/>
+    <text x="600" y="289" text-anchor="middle" fill="#e0f2fe">any MCP client</text>
+  </g>
+  <text x="600" y="336" class="m" font-size="12" text-anchor="middle" fill="#64748b">drivers</text>
+
+  <!-- beams in -->
+  <g fill="none" stroke="url(#beam)" stroke-width="2.5">
+    <path class="flow" d="M680 116 C 740 116, 740 200, 800 200"/>
+    <path class="flow" d="M680 200 L 800 200"/>
+    <path class="flow" d="M680 284 C 740 284, 740 200, 800 200"/>
+  </g>
+
+  <!-- hub -->
+  <circle cx="850" cy="200" r="70" fill="url(#core)" class="pulse"/>
+  <circle cx="850" cy="200" r="46" fill="#0b1020" stroke="#7dd3fc" stroke-width="2" filter="url(#glow)"/>
+  <g stroke="#e0f2fe" stroke-width="5" fill="none" stroke-linecap="round">
+    <path d="M832 188 a14 14 0 0 1 20 0 l6 6 a14 14 0 0 1 0 20"/>
+    <path d="M868 212 a14 14 0 0 1 -20 0 l-6 -6 a14 14 0 0 1 0 -20"/>
+  </g>
+  <text x="850" y="296" class="m" font-size="12" text-anchor="middle" fill="#7dd3fc">MCP · stdio</text>
+
+  <!-- beams out -->
+  <g fill="none" stroke="url(#beamR)" stroke-width="2.5">
+    <path class="flow" d="M900 200 C 960 200, 960 76, 1020 76"/>
+    <path class="flow" d="M900 200 C 960 200, 960 138, 1020 138"/>
+    <path class="flow" d="M900 200 L 1020 200"/>
+    <path class="flow" d="M900 200 C 960 200, 960 262, 1020 262"/>
+    <path class="flow" d="M900 200 C 960 200, 960 324, 1020 324"/>
+  </g>
+
+  <!-- right: harnesses -->
+  <g class="t" font-size="15" font-weight="600">
+    <rect class="chip" x="1020" y="56" width="196" height="40" rx="10" stroke="#a78bfa"/>
+    <text x="1118" y="81" text-anchor="middle" fill="#ede9fe">PEGASUS</text>
+    <rect class="chip" x="1020" y="118" width="196" height="40" rx="10" stroke="#a78bfa"/>
+    <text x="1118" y="143" text-anchor="middle" fill="#ede9fe">Hermes Agent</text>
+    <rect class="chip" x="1020" y="180" width="196" height="40" rx="10" stroke="#a78bfa"/>
+    <text x="1118" y="205" text-anchor="middle" fill="#ede9fe">Claude Code</text>
+    <rect class="chip" x="1020" y="242" width="196" height="40" rx="10" stroke="#a78bfa"/>
+    <text x="1118" y="267" text-anchor="middle" fill="#ede9fe">Codex CLI</text>
+    <rect class="chip" x="1020" y="304" width="196" height="40" rx="10" stroke="#f472b6" stroke-dasharray="4 4"/>
+    <text x="1118" y="329" text-anchor="middle" fill="#fce7f3">your CLI agent</text>
+  </g>
+  <text x="1118" y="372" class="m" font-size="12" text-anchor="middle" fill="#64748b">harnesses, each in its own sandbox</text>
+
+  <text x="64" y="372" class="t" font-size="13" fill="#64748b">Born inside PEGASUS · MIT</text>
+</svg>

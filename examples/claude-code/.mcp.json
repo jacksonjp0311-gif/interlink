@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "interlink": {
+      "command": "uvx",
+      "args": ["--from", "interlink-mcp", "interlink", "serve"],
+      "env": {
+        "INTERLINK_CONFIG": "./interlink.toml"
+      }
+    }
+  }
+}

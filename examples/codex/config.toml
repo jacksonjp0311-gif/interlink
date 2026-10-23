@@ -1,0 +1,7 @@
+# Append to ~/.codex/config.toml
+[mcp_servers.interlink]
+command = "uvx"
+args = ["--from", "interlink-mcp", "interlink", "serve"]
+startup_timeout_sec = 20
+tool_timeout_sec = 120
+# env = { INTERLINK_CONFIG = "/path/to/interlink.toml" }
