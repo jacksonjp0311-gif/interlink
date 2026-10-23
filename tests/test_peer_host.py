@@ -425,3 +425,19 @@ def test_audit_log_records_rejections(pair: Pair) -> None:
     assert "request_rejected" in events and "task_finished" in events
     assert pair.host.audit.verify()["valid"]
     assert not any("say hi" in json.dumps(e) for e in entries)  # prompts aren't logged in clear
+
+
+def test_audit_is_written_before_the_result_is_visible(pair: Pair) -> None:
+    """Write-ahead: a requester must never see a result the audit log hasn't recorded."""
+    seen: list[bool] = []
+    original = pair.host.audit.append
+
+    def spy(event: str, **data: object) -> dict:
+        if event == "task_finished":
+            task = next(t for t in pair.host.tasks.values() if t.task_id == data["task"])
+            seen.append(task.result is None)
+        return original(event, **data)
+
+    pair.host.audit.append = spy  # type: ignore[method-assign]
+    _finished(pair)
+    assert seen == [True]

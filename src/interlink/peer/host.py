@@ -481,7 +481,7 @@ class PeerHost:
                 not task.chain.entries or task.chain.entries[-1]["event"] != "finished"
             ):
                 task.chain.append(state, reason=reason)
-            task.state, task.reason, task.finished = state, reason, time.time()
+            finished = time.time()
             bundle = result.get("bundle")
             statement = {
                 "schema": RESULT_SCHEMA,
@@ -503,21 +503,24 @@ class PeerHost:
                 "chain": task.chain.entries,
                 "chain_head": task.chain.head,
                 "created_at": task.created,
-                "finished_at": task.finished,
+                "finished_at": finished,
                 "host_version": __version__,
                 "isolation": "fresh workspace, private HOME/TMP, env allow-list, no host secrets",
             }
-            task.result = sign_result(self.identity, statement)
-            atomic_write_json(self.state_dir / "results" / f"{task.key}.json", task.result)
+            signed = sign_result(self.identity, statement)
+            atomic_write_json(self.state_dir / "results" / f"{task.key}.json", signed)
+            # Write-ahead: the audit entry is durable before anyone can see the result.
+            self.audit.append(
+                "task_finished",
+                peer=task.peer_fp,
+                task=task.task_id,
+                state=state,
+                chain_head=task.chain.head,
+                reason=reason,
+            )
+            task.state, task.reason, task.finished = state, reason, finished
+            task.result = signed
             self._persist(task)
-        self.audit.append(
-            "task_finished",
-            peer=task.peer_fp,
-            task=task.task_id,
-            state=state,
-            chain_head=task.chain.head,
-            reason=reason,
-        )
         self.on_event("finished", task.record())
 
     def _persist(self, task: Task) -> None:
