@@ -1,0 +1,5 @@
+{"type":"system","subtype":"init","session_id":"5f0c1e9a-2b1d-4c47-9d0e-2f7c8b1a0d11","model":"claude-sonnet-4-5","tools":["Bash","Read","Write"],"cwd":"/work"}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"I'll create the file."},{"type":"tool_use","id":"toolu_01","name":"Write","input":{"file_path":"hello.txt","content":"hi"}}]},"session_id":"5f0c1e9a-2b1d-4c47-9d0e-2f7c8b1a0d11"}
+{"type":"user","message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_01","content":"File created","is_error":false}]},"session_id":"5f0c1e9a-2b1d-4c47-9d0e-2f7c8b1a0d11"}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"Done - hello.txt now says hi."}]},"session_id":"5f0c1e9a-2b1d-4c47-9d0e-2f7c8b1a0d11"}
+{"type":"result","subtype":"success","is_error":false,"result":"Done - hello.txt now says hi.","session_id":"5f0c1e9a-2b1d-4c47-9d0e-2f7c8b1a0d11","num_turns":2,"duration_ms":4200,"total_cost_usd":0.0123}
