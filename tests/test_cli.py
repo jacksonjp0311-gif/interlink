@@ -106,7 +106,9 @@ def test_snippets() -> None:
     assert server["args"][-1] == "serve" or "serve" in server["args"]
     codex = tomllib.loads(snippet("codex", "/cfg/interlink.toml"))
     assert "interlink" in codex["mcp_servers"]
-    assert "/cfg/interlink.toml" in codex["mcp_servers"]["interlink"]["args"]
+    # the config path is made absolute in the platform's own form (D:\\cfg\\... on Windows)
+    expected = str(Path("/cfg/interlink.toml").resolve())
+    assert expected in codex["mcp_servers"]["interlink"]["args"]
     assert snippet("claude-code-cli").startswith("claude mcp add")
 
 
