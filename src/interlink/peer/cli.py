@@ -216,7 +216,10 @@ def cmd_serve(args: argparse.Namespace) -> int:
     print(f"Interlink is sharing on {scheme}://{args.bind}:{bound[1]}  (Ctrl+C to stop)")
     print(f"Host fingerprint: {me.fingerprint}")
     active = [p for p in book.all() if not p.revoked and p.policy.harnesses]
-    print(f"Peers who can run something: {', '.join(p.name for p in active) or 'none yet'}")
+    print(
+        f"Peers who can run something: {', '.join(p.name for p in active) or 'none yet'}",
+        flush=True,  # the banner means "listening"; scripts and tests wait for it
+    )
     thread = threading.Thread(target=server.serve_forever, name="peer-http", daemon=True)
     thread.start()
     try:
