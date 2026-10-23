@@ -1,0 +1,74 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "interlink-mcp"
+version = "0.1.0"
+description = "Drive any agent harness (Hermes, PEGASUS, Claude Code, Codex, any CLI) from any MCP client, inside throwaway, evidence-recording sandboxes."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+authors = [{ name = "James Paul Jackson" }]
+keywords = ["mcp", "agents", "harness", "claude-code", "codex", "hermes", "testing", "sandbox"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Testing",
+]
+dependencies = [
+  "mcp>=2.3,<3",
+  "pydantic>=2.12,<3",
+]
+
+[project.optional-dependencies]
+windows = ["pywin32>=311; sys_platform == 'win32'"]
+dev = ["pytest>=8", "pytest-timeout>=2.3", "ruff>=0.6"]
+
+[project.scripts]
+interlink = "interlink.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/jacksonjp0311-gif/interlink"
+Issues = "https://github.com/jacksonjp0311-gif/interlink/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/interlink"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "tests", "examples", "docs", "assets", "README.md", "LICENSE", "CHANGELOG.md", "CONTRIBUTING.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+timeout = 120
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "RUF"]
+ignore = [
+  "E501",   # line length is the formatter's job; long strings stay readable
+  "B027",   # optional no-op hooks on HarnessAdapter are intentional
+  "S101",   # assert in tests
+  "S603",   # subprocess without shell: argv is always a list here, by design
+  "S607",   # partial executable path: harness commands are resolved from PATH on purpose
+  "S404",   # subprocess import
+  "RUF012",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "B011"]
+"examples/**" = ["S"]
