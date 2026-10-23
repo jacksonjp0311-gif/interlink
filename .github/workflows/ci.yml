@@ -45,3 +45,4 @@ jobs:
           interlink --version
           interlink doctor
           interlink run mock "say hello from CI"
+          interlink peer id
