@@ -1,0 +1,117 @@
+{
+  "generated_at": "2026-10-23T17:29:00+00:00",
+  "instance": {
+    "adapter": "pegasus",
+    "created": 1792776534.0255291,
+    "env_keys": [
+      "APPDATA",
+      "COMSPEC",
+      "HOME",
+      "INTERLINK_INSTANCE_ID",
+      "INTERLINK_WORKSPACE",
+      "LOCALAPPDATA",
+      "NO_COLOR",
+      "NUMBER_OF_PROCESSORS",
+      "PATH",
+      "PATHEXT",
+      "PROCESSOR_ARCHITECTURE",
+      "PYTHONDONTWRITEBYTECODE",
+      "PYTHONIOENCODING",
+      "PYTHONUTF8",
+      "SYSTEMDRIVE",
+      "SYSTEMROOT",
+      "TEMP",
+      "TMP",
+      "TMPDIR",
+      "USERPROFILE",
+      "WINDIR",
+      "XDG_CACHE_HOME",
+      "XDG_CONFIG_HOME",
+      "XDG_DATA_HOME",
+      "XDG_STATE_HOME"
+    ],
+    "harness": "pegasus",
+    "host": {
+      "boundary": "separate profile + authenticated host; same OS account, not an OS sandbox",
+      "build_sha256": "beb169495d51b9700f04e5aef42d71b2e87df41a8ff2229f8353d8ad323b74eb",
+      "generation": "0f7ba8b3-30ba-443f-8127-ece8bb27bfaf",
+      "identity": null,
+      "inference_enabled": false,
+      "pid": 57280,
+      "source_sha256": "ac599141fae1e4d1bb2dbcadd278cfda9c2794cd8c510a5db52be2b8629ae329"
+    },
+    "id": "af84f3ec-3ca9-4ff7-a9ca-d466ea380d68",
+    "kind": "host",
+    "label": "pegasus",
+    "secret_keys": [],
+    "seed": {
+      "files_total": 0
+    },
+    "state": "ready"
+  },
+  "interlink": {
+    "platform": "win32-py3.14",
+    "server_id": "32938299-d503-41c1-ad36-416898873588",
+    "version": "0.2.1"
+  },
+  "omitted": [
+    "prompt text (sha256 only)",
+    "raw stdout/stderr logs",
+    "environment values"
+  ],
+  "receipt_chain": {
+    "head": "ad360c02b89993b58227f1592d39e677f5d142e28f7ea5dd74692c651e7afdeb",
+    "receipts": 38,
+    "valid": true
+  },
+  "receipts": [
+    {
+      "at": 1792776540.01693,
+      "hash": "a628df5ad23b747a3318de95b2e2c244e250f66a58dfa9fb5ba6474c87b201e2",
+      "kind": "launched",
+      "sequence": 36
+    },
+    {
+      "at": 1792776540.03895,
+      "hash": "5fad41bcd4aaf72f69d7369a3c7beca81fb0d138e6f50e018a0ba3ad1f121f29",
+      "kind": "prompt_submitted",
+      "sequence": 37
+    },
+    {
+      "at": 1792776540.094145,
+      "hash": "ad360c02b89993b58227f1592d39e677f5d142e28f7ea5dd74692c651e7afdeb",
+      "kind": "run_finished",
+      "sequence": 38
+    }
+  ],
+  "runs": [
+    {
+      "detail": {
+        "code": "inference_disabled_opt_in_required",
+        "host_status": "refused"
+      },
+      "event_counts": {
+        "error": 1,
+        "interlink": 1,
+        "status": 1
+      },
+      "events_sha256": "78d4290916bd8643a997b93420d81e325aecf3e218ddfd58a84ebb6fe0e69bdf",
+      "exit_code": null,
+      "finished": 1792776540.0856302,
+      "prompt_sha256": "a253db5503be2ea7c2a70107a73b1f8d66a82aedc5e8c18564e233e82486a8b0",
+      "run_id": "1c46c143-21ed-47d1-8971-89e69658f453",
+      "started": 1792776540.0319357,
+      "state": "failed",
+      "timeout_s": 600.0
+    }
+  ],
+  "schema": "interlink-evidence/1",
+  "truncated": [],
+  "unresolved_requests": [],
+  "workspace": {
+    "added": [],
+    "deleted": [],
+    "files_total": 0,
+    "modified": []
+  }
+}

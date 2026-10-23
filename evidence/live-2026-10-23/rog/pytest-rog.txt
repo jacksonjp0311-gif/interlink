@@ -1,0 +1,20 @@
+.............................................s.......................... [ 36%]
+..........................s............................................. [ 73%]
+.......sssssssss.....ss...s............s...........                      [100%]
+=========================== short test summary info ===========================
+SKIPPED [1] tests\test_engine.py:73: grandchild tracking via process groups is POSIX
+SKIPPED [1] tests\test_peer_crypto.py:70: POSIX permissions
+SKIPPED [1] tests\test_pegasus.py:57: POSIX socket seam (Windows uses a named pipe)
+SKIPPED [1] tests\test_pegasus.py:78: POSIX socket seam (Windows uses a named pipe)
+SKIPPED [1] tests\test_pegasus.py:87: POSIX socket seam (Windows uses a named pipe)
+SKIPPED [1] tests\test_pegasus.py:93: POSIX socket seam (Windows uses a named pipe)
+SKIPPED [1] tests\test_pegasus.py:103: POSIX socket seam (Windows uses a named pipe)
+SKIPPED [1] tests\test_pegasus.py:109: POSIX socket seam (Windows uses a named pipe)
+SKIPPED [1] tests\test_pegasus.py:127: POSIX socket seam (Windows uses a named pipe)
+SKIPPED [1] tests\test_pegasus.py:135: POSIX socket seam (Windows uses a named pipe)
+SKIPPED [1] tests\test_pegasus.py:142: POSIX socket seam (Windows uses a named pipe)
+SKIPPED [1] tests\test_process.py:72: process groups are POSIX; Windows uses Job objects
+SKIPPED [1] tests\test_process.py:102: needs /proc
+SKIPPED [1] tests\test_sandbox.py:41: symlinks need privileges on Windows
+SKIPPED [1] tests\test_security.py:35: symlinks need privileges on Windows
+180 passed, 15 skipped in 81.53s (0:01:21)

@@ -1,0 +1,16 @@
+metric,unit,rog_windows,box_linux
+MCP connect + initialize,ms,2336.26,651.85
+MCP list_tools,ms,7.95,3.75
+MCP tool round-trip p50 (n=200),ms,4.12,1.45
+MCP tool round-trip p95 (n=200),ms,5.67,2.46
+Mock lifecycle total p50 (n=20),ms,566.25,78.89
+Mock prompt end-to-end p50,ms,481.06,60.13
+Ledger append per receipt (5000),ms,0.9137,0.1006
+Ledger verify throughput,receipts/s,70225,166945
+Peer signed hello in-process p50 (n=40),ms,16.69,1.74
+Peer signed ping via CLI p50 (n=10),ms,644.22,205.82
+Peer delegated task via CLI p50 (n=5),ms,1699.53,1226.11
+Codex real turn via Interlink (prompt end-to-end),ms,16839.87,
+"Codex as MCP client, 5-tool session wall",ms,30036.11,
+PEGASUS host launch (disposable copy),ms,6016.88,
+PEGASUS host stop,ms,654.96,

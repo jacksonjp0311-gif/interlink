@@ -1,10 +1,12 @@
 """OpenAI Codex CLI as the harness under test, via ``codex exec --json``.
 
-``CODEX_HOME`` is pointed into the sandbox, so your real ~/.codex (auth, history,
-config) is untouched; supply ``CODEX_API_KEY``/``OPENAI_API_KEY`` via ``secrets``.
+With ``isolate_home = true`` (default) ``CODEX_HOME`` is pointed into the sandbox, so
+your real ~/.codex (auth, history, config) is untouched; supply ``CODEX_API_KEY`` /
+``OPENAI_API_KEY`` via ``secrets``. With ``isolate_home = false`` ``CODEX_HOME`` is left
+alone and codex uses your existing login; Interlink never reads or copies auth.json.
 Follow-up prompts use ``codex exec resume <thread_id>``. Status: argv checked against
 codex-cli 0.163 (``exec --help``/``exec resume --help``) and a live unauthenticated run;
-authenticated turns are covered by recorded-fixture tests only.
+authenticated turns verified live with ``isolate_home = false`` (see evidence/).
 """
 
 from __future__ import annotations
@@ -34,11 +36,16 @@ class CodexAdapter(CommandAdapter):
     options: CodexOptions
 
     def environment(self, workspace: Workspace) -> dict[str, str]:
+        # isolate_home = false means "use my existing Codex login": leave CODEX_HOME
+        # unset so codex finds ~/.codex itself. Interlink never copies auth.json.
+        if not self.options.isolate_home:
+            return {}
         return {"CODEX_HOME": str(workspace.home / ".codex")}
 
     def prepare(self, instance: InstanceView) -> None:
         # codex refuses to start if CODEX_HOME does not exist yet.
-        (instance.workspace.home / ".codex").mkdir(parents=True, exist_ok=True)
+        if self.options.isolate_home:
+            (instance.workspace.home / ".codex").mkdir(parents=True, exist_ok=True)
 
     def build_argv(self, ctx: RunContext) -> list[str]:
         o = self.options

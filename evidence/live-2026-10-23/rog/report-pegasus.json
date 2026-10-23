@@ -1,0 +1,133 @@
+{
+  "schema": "interlink-live-report/1",
+  "started_utc": "2026-10-23T17:28:44Z",
+  "machine": {
+    "os": "Microsoft Windows 11 Pro",
+    "machine": "AMD64",
+    "python": "3.14.7",
+    "interlink": "0.2.1",
+    "cpu_count": 32,
+    "cpu": "AMD RYZEN AI MAX+ 395 w/ Radeon 8060S",
+    "cores": 16,
+    "threads": 32,
+    "ram_gb": 123.6,
+    "build": "10.0.26200"
+  },
+  "ledger": {
+    "skipped": true
+  },
+  "mcp": {
+    "connect_initialize_ms": 1927.23,
+    "list_tools_ms": 8.73,
+    "tools": 9,
+    "protocol": "2026-07-28",
+    "roundtrip_harnesses_ms": {
+      "n": 20,
+      "min": 2.15,
+      "p50": 3.89,
+      "p95": 7.31,
+      "max": 155.03,
+      "mean": 11.5
+    },
+    "mock_lifecycle_ms": {
+      "launch": {
+        "n": 5,
+        "min": 26.66,
+        "p50": 35.0,
+        "p95": 44.45,
+        "max": 44.45,
+        "mean": 34.75
+      },
+      "prompt_e2e": {
+        "n": 5,
+        "min": 372.14,
+        "p50": 433.4,
+        "p95": 561.86,
+        "max": 561.86,
+        "mean": 439.35
+      },
+      "files": {
+        "n": 5,
+        "min": 6.75,
+        "p50": 8.21,
+        "p95": 11.1,
+        "max": 11.1,
+        "mean": 8.52
+      },
+      "evidence": {
+        "n": 5,
+        "min": 11.95,
+        "p50": 15.83,
+        "p95": 18.2,
+        "max": 18.2,
+        "mean": 15.04
+      },
+      "stop_discard": {
+        "n": 5,
+        "min": 21.13,
+        "p50": 26.43,
+        "p95": 26.88,
+        "max": 26.88,
+        "mean": 25.34
+      },
+      "total": {
+        "n": 5,
+        "min": 447.11,
+        "p50": 511.65,
+        "p95": 645.81,
+        "max": 645.81,
+        "mean": 523.15
+      }
+    },
+    "mock_receipt_chain_valid": true,
+    "env_allowlist": {
+      "canary_value_in_any_transcript": false,
+      "declared_secret_redacted_in_transcript": true,
+      "undeclared_child_env_key_count": 25,
+      "undeclared_child_secretish_keys": [],
+      "parent_secretish_key_count": 0,
+      "parent_secretish_keys_leaked_to_child": [],
+      "evidence_env_keys_recorded": true
+    },
+    "live_pegasus": {
+      "ran": true,
+      "launch_ms": 6016.88,
+      "launch_status": "complete",
+      "host_info": {
+        "generation": "0f7ba8b3-30ba-443f-8127-ece8bb27bfaf",
+        "source_sha256": "ac599141fae1e4d1bb2dbcadd278cfda9c2794cd8c510a5db52be2b8629ae329",
+        "build_sha256": "beb169495d51b9700f04e5aef42d71b2e87df41a8ff2229f8353d8ad323b74eb",
+        "inference_enabled": false,
+        "boundary": "separate profile + authenticated host; same OS account, not an OS sandbox"
+      },
+      "prompt_status": "complete",
+      "prompt_e2e_ms": 85.99,
+      "run_state": "failed",
+      "exit_code": null,
+      "event_counts": {
+        "status": 1,
+        "error": 1,
+        "interlink": 1
+      },
+      "final_text_tail": "",
+      "errors": [
+        "{\"seq\": 2, \"at\": 1792776540.084, \"type\": \"error\", \"code\": \"inference_disabled_opt_in_required\", \"message\": \"inference_disabled_opt_in_required\", \"status\": \"refused\"}"
+      ],
+      "files_changed": [],
+      "receipt_chain_valid": true,
+      "stop_ms": 654.96,
+      "total_ms": 6789.05
+    },
+    "ok": true,
+    "section_ms": 14353.41
+  },
+  "peer": {
+    "skipped": true
+  },
+  "codex_client": {
+    "skipped": true,
+    "ok": true,
+    "section_ms": 0.01
+  },
+  "finished_utc": "2026-10-23T17:29:01Z"
+}

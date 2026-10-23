@@ -6,6 +6,34 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-10-23
+
+Live-validated on Windows and Linux with real Codex and a real PEGASUS host.
+
+### Fixed
+- Codex adapter: with `isolate_home = false`, Interlink no longer sets `CODEX_HOME`, so
+  Codex uses your existing login. Before, it was pointed at an empty
+  directory in the sandbox and every turn failed as unauthenticated. With
+  `isolate_home = true`, the private `.codex` dir is created as before.
+
+### Added
+- `evidence/live-2026-10-23/`: a signed live-validation package. It contains benchmarks
+  for both machines (CSV and chart), receipt ledgers, peer audit logs, signed peer
+  results, before/after snapshots showing the PEGASUS checkout was untouched, the
+  benchmark harness, and `verify.py`.
+- README: "Live validation & benchmarks" section.
+
+### Verified live
+- A real Codex turn through Interlink using the existing login.
+- Codex as the MCP client, driving Interlink end-to-end through `-c` overrides only.
+  Note: `codex exec` needs `mcp_servers.<name>.default_tools_approval_mode = "approve"`,
+  otherwise it cancels MCP tool calls.
+- The PEGASUS host adapter booting the real PEGASUS executable from a disposable copy.
+
+### Tests
+- New test: a shared Codex home leaves `CODEX_HOME` unset, and an isolated home points
+  it into the sandbox.
+
 ## [0.2.1] - 2026-10-23
 
 First release with CI green on Linux, macOS and Windows.

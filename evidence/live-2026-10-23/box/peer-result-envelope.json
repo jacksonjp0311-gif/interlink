@@ -1,0 +1,186 @@
+{
+  "host_invite": "IL1-K7IKY-N4VIJ-VYBN4-PM6YJ-HNHZM-CKFMH-PM67D-HESM6-FAMZC-RQHP7-ZAHPQ-E",
+  "host_fingerprint": "3TBM-ZD3W-P5VW-32GB-OAVR-2ZAZ",
+  "requester_fingerprint": "3H5M-JGSX-VAXP-S5JJ-J7JU-4VBC",
+  "envelope": {
+    "signature": "93rbD-hauW1xgCNSrlUPbB7UTzXemEVOkWvQpADuhFLUNYyXCv61vp0zmf0jL8UOJxmZgEE-BVeoHaCGlnYuBg",
+    "statement": {
+      "chain": [
+        {
+          "at": 1792776696.117,
+          "event": "received",
+          "files": 0,
+          "harness": "writer",
+          "hash": "f8cb20f22bff6000c9bb9f29ac5f34b5ff433c1cb97229235317e53b1f380c24",
+          "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+          "request_sha256": "59c33e7997a903b81a89f28800f79f83852cda60ae8ff04585a2b6d1b8d1ae08",
+          "requester": "3H5M-JGSX-VAXP-S5JJ-J7JU-4VBC",
+          "seq": 1
+        },
+        {
+          "at": 1792776696.117,
+          "event": "approved",
+          "hash": "620e7f92103b1574f95691cc0bbea101eb80b8a70060ef94e8e06111e8cbf549",
+          "how": "auto-approved by policy",
+          "prev": "f8cb20f22bff6000c9bb9f29ac5f34b5ff433c1cb97229235317e53b1f380c24",
+          "seq": 2
+        },
+        {
+          "at": 1792776696.121,
+          "event": "started",
+          "hash": "a4162177052e0ea048b0c425f50614379d374cc56164d691cddf6d20bb8419bb",
+          "instance_id": "40109c75-cba5-46db-a5a3-14f3f2edb968",
+          "prev": "620e7f92103b1574f95691cc0bbea101eb80b8a70060ef94e8e06111e8cbf549",
+          "seq": 3
+        },
+        {
+          "at": 1792776696.185,
+          "event": "finished",
+          "evidence_sha256": "fad795d5f90f1c098ebd5ffd8672b0f1eea110c8fffa42967525b2e271180461",
+          "exit_code": 0,
+          "files": 1,
+          "hash": "0a321f2d5951810f8a72650cc382688336b0ab6aa2ced8b3112429f17b563ee6",
+          "prev": "a4162177052e0ea048b0c425f50614379d374cc56164d691cddf6d20bb8419bb",
+          "seq": 4,
+          "state": "complete"
+        }
+      ],
+      "chain_head": "0a321f2d5951810f8a72650cc382688336b0ab6aa2ced8b3112429f17b563ee6",
+      "created_at": 1792776696.1168044,
+      "deleted": [],
+      "evidence": {
+        "bundle": {
+          "generated_at": "2026-10-23T17:31:36+00:00",
+          "instance": {
+            "adapter": "command",
+            "created": 1792776696.1193576,
+            "env_keys": [
+              "HOME",
+              "INTERLINK_INSTANCE_ID",
+              "INTERLINK_WORKSPACE",
+              "LANG",
+              "LC_ALL",
+              "NO_COLOR",
+              "PATH",
+              "PYTHONDONTWRITEBYTECODE",
+              "PYTHONIOENCODING",
+              "PYTHONUTF8",
+              "TEMP",
+              "TERM",
+              "TMP",
+              "TMPDIR",
+              "USERPROFILE",
+              "XDG_CACHE_HOME",
+              "XDG_CONFIG_HOME",
+              "XDG_DATA_HOME",
+              "XDG_STATE_HOME"
+            ],
+            "harness": "writer",
+            "host": {},
+            "id": "40109c75-cba5-46db-a5a3-14f3f2edb968",
+            "kind": "command",
+            "label": "peer:alice",
+            "secret_keys": [],
+            "seed": {
+              "files_total": 0
+            },
+            "state": "ready"
+          },
+          "interlink": {
+            "platform": "linux-py3.13",
+            "server_id": "99b6ab61-c452-4622-936b-9bd4b27f7934",
+            "version": "0.2.1"
+          },
+          "omitted": [
+            "prompt text (sha256 only)",
+            "raw stdout/stderr logs",
+            "environment values"
+          ],
+          "receipt_chain": {
+            "head": "a317b8e17c88b24a9be176b9ad31e694501d998b454daac372613aea6269b39e",
+            "receipts": 24,
+            "valid": true
+          },
+          "receipts": [
+            {
+              "at": 1792776696.120788,
+              "hash": "749e8e9746edaba9fa25d9672ffa555861241a675381b5231a6411202bfceb5d",
+              "kind": "launched",
+              "sequence": 22
+            },
+            {
+              "at": 1792776696.123411,
+              "hash": "4bb29e0ab9aa5714040929dd5d1e3248e38423616a1b84f5ba6b43de1cbc3214",
+              "kind": "prompt_submitted",
+              "sequence": 23
+            },
+            {
+              "at": 1792776696.17802,
+              "hash": "a317b8e17c88b24a9be176b9ad31e694501d998b454daac372613aea6269b39e",
+              "kind": "run_finished",
+              "sequence": 24
+            }
+          ],
+          "runs": [
+            {
+              "detail": {
+                "duration_s": 0.052,
+                "pid": 213872
+              },
+              "event_counts": {
+                "interlink": 2
+              },
+              "events_sha256": "55f67db8df492b68fdafb0b7719cdef10ae4b06119cbb7068dc57ed68d0487f7",
+              "exit_code": 0,
+              "finished": 1792776696.1765292,
+              "prompt_sha256": "ca9a6a8b4b02672ca218f25f9c27e0aabf5d44e7fdceba8169e7fddda4865a0d",
+              "run_id": "8b212a47-26d9-4c3f-a29a-be3393513f05",
+              "started": 1792776696.1225257,
+              "state": "complete",
+              "timeout_s": 300.0
+            }
+          ],
+          "schema": "interlink-evidence/1",
+          "truncated": [],
+          "unresolved_requests": [],
+          "workspace": {
+            "added": [
+              {
+                "path": "out.txt",
+                "sha256": "658eafcc7b711dfaddbcf2dde25374423c0245e6608970e7bf5d239e318e8606",
+                "size": 18
+              }
+            ],
+            "deleted": [],
+            "files_total": 1,
+            "modified": []
+          }
+        },
+        "sha256": "fad795d5f90f1c098ebd5ffd8672b0f1eea110c8fffa42967525b2e271180461"
+      },
+      "exit_code": 0,
+      "files": [
+        {
+          "omitted": false,
+          "path": "out.txt",
+          "sha256": "658eafcc7b711dfaddbcf2dde25374423c0245e6608970e7bf5d239e318e8606",
+          "size": 18,
+          "status": "added",
+          "text": "HELLO FROM ALICE 4"
+        }
+      ],
+      "final_text": "",
+      "finished_at": 1792776696.1851182,
+      "harness": "writer",
+      "host": "3TBM-ZD3W-P5VW-32GB-OAVR-2ZAZ",
+      "host_version": "0.2.1",
+      "isolation": "fresh workspace, private HOME/TMP, env allow-list, no host secrets",
+      "reason": null,
+      "request_sha256": "59c33e7997a903b81a89f28800f79f83852cda60ae8ff04585a2b6d1b8d1ae08",
+      "requester": "3H5M-JGSX-VAXP-S5JJ-J7JU-4VBC",
+      "schema": "interlink-peer-result/1",
+      "state": "complete",
+      "task_id": "8b4881ae-2779-4c80-a063-4c87ac8db2f1"
+    }
+  }
+}

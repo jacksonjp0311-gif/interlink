@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="516" viewBox="0 0 860 516" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="13">
+<rect width="860" height="516" fill="#ffffff"/>
+<text x="20" y="30" font-size="17" font-weight="600" fill="#111">Interlink live benchmarks, 2026-10-23 (median, lower is better, log scale)</text>
+<rect x="20" y="44" width="12" height="12" fill="#6d28d9"/><text x="38" y="55" fill="#333">Windows 11 laptop (Ryzen AI MAX+ 395, OneDrive-synced folder)</text>
+<rect x="470" y="44" width="12" height="12" fill="#0d9488"/><text x="488" y="55" fill="#333">Linux box (8-vCPU Xeon)</text>
+<line x1="330.0" y1="70" x2="330.0" y2="476" stroke="#e5e7eb"/>
+<text x="330.0" y="492" text-anchor="middle" fill="#666">0.01 ms</text>
+<line x1="405.0" y1="70" x2="405.0" y2="476" stroke="#e5e7eb"/>
+<text x="405.0" y="492" text-anchor="middle" fill="#666">0.1 ms</text>
+<line x1="480.0" y1="70" x2="480.0" y2="476" stroke="#e5e7eb"/>
+<text x="480.0" y="492" text-anchor="middle" fill="#666">1 ms</text>
+<line x1="555.0" y1="70" x2="555.0" y2="476" stroke="#e5e7eb"/>
+<text x="555.0" y="492" text-anchor="middle" fill="#666">10 ms</text>
+<line x1="630.0" y1="70" x2="630.0" y2="476" stroke="#e5e7eb"/>
+<text x="630.0" y="492" text-anchor="middle" fill="#666">100 ms</text>
+<line x1="705.0" y1="70" x2="705.0" y2="476" stroke="#e5e7eb"/>
+<text x="705.0" y="492" text-anchor="middle" fill="#666">1 s</text>
+<line x1="780.0" y1="70" x2="780.0" y2="476" stroke="#e5e7eb"/>
+<text x="780.0" y="492" text-anchor="middle" fill="#666">10 s</text>
+<text x="320" y="96" text-anchor="end" fill="#222">MCP connect + initialize</text>
+<rect x="330" y="76" width="402.6" height="14" fill="#6d28d9" rx="2"/>
+<text x="737.6" y="87" fill="#333" font-size="11">2336.26 ms</text>
+<rect x="330" y="93" width="361.1" height="14" fill="#0d9488" rx="2"/>
+<text x="696.1" y="104" fill="#333" font-size="11">651.85 ms</text>
+<text x="320" y="140" text-anchor="end" fill="#222">MCP list_tools</text>
+<rect x="330" y="120" width="217.5" height="14" fill="#6d28d9" rx="2"/>
+<text x="552.5" y="131" fill="#333" font-size="11">7.95 ms</text>
+<rect x="330" y="137" width="193.1" height="14" fill="#0d9488" rx="2"/>
+<text x="528.1" y="148" fill="#333" font-size="11">3.75 ms</text>
+<text x="320" y="184" text-anchor="end" fill="#222">MCP tool round-trip p50 (n=200)</text>
+<rect x="330" y="164" width="196.1" height="14" fill="#6d28d9" rx="2"/>
+<text x="531.1" y="175" fill="#333" font-size="11">4.12 ms</text>
+<rect x="330" y="181" width="162.1" height="14" fill="#0d9488" rx="2"/>
+<text x="497.1" y="192" fill="#333" font-size="11">1.45 ms</text>
+<text x="320" y="228" text-anchor="end" fill="#222">Mock lifecycle total p50 (n=20)</text>
+<rect x="330" y="208" width="356.5" height="14" fill="#6d28d9" rx="2"/>
+<text x="691.5" y="219" fill="#333" font-size="11">566.25 ms</text>
+<rect x="330" y="225" width="292.3" height="14" fill="#0d9488" rx="2"/>
+<text x="627.3" y="236" fill="#333" font-size="11">78.89 ms</text>
+<text x="320" y="272" text-anchor="end" fill="#222">Mock prompt end-to-end p50</text>
+<rect x="330" y="252" width="351.2" height="14" fill="#6d28d9" rx="2"/>
+<text x="686.2" y="263" fill="#333" font-size="11">481.06 ms</text>
+<rect x="330" y="269" width="283.4" height="14" fill="#0d9488" rx="2"/>
+<text x="618.4" y="280" fill="#333" font-size="11">60.13 ms</text>
+<text x="320" y="316" text-anchor="end" fill="#222">Ledger append per receipt (5000)</text>
+<rect x="330" y="296" width="147.1" height="14" fill="#6d28d9" rx="2"/>
+<text x="482.1" y="307" fill="#333" font-size="11">0.9137 ms</text>
+<rect x="330" y="313" width="75.2" height="14" fill="#0d9488" rx="2"/>
+<text x="410.2" y="324" fill="#333" font-size="11">0.1006 ms</text>
+<text x="320" y="360" text-anchor="end" fill="#222">Peer signed hello in-process p50 (n=40)</text>
+<rect x="330" y="340" width="241.7" height="14" fill="#6d28d9" rx="2"/>
+<text x="576.7" y="351" fill="#333" font-size="11">16.69 ms</text>
+<rect x="330" y="357" width="168.0" height="14" fill="#0d9488" rx="2"/>
+<text x="503.0" y="368" fill="#333" font-size="11">1.74 ms</text>
+<text x="320" y="404" text-anchor="end" fill="#222">Peer signed ping via CLI p50 (n=10)</text>
+<rect x="330" y="384" width="360.7" height="14" fill="#6d28d9" rx="2"/>
+<text x="695.7" y="395" fill="#333" font-size="11">644.22 ms</text>
+<rect x="330" y="401" width="323.5" height="14" fill="#0d9488" rx="2"/>
+<text x="658.5" y="412" fill="#333" font-size="11">205.82 ms</text>
+<text x="320" y="448" text-anchor="end" fill="#222">Peer delegated task via CLI p50 (n=5)</text>
+<rect x="330" y="428" width="392.3" height="14" fill="#6d28d9" rx="2"/>
+<text x="727.3" y="439" fill="#333" font-size="11">1699.53 ms</text>
+<rect x="330" y="445" width="381.6" height="14" fill="#0d9488" rx="2"/>
+<text x="716.6" y="456" fill="#333" font-size="11">1226.11 ms</text>
+</svg>

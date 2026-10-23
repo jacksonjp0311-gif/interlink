@@ -1,0 +1,253 @@
+{
+  "schema": "interlink-live-report/1",
+  "started_utc": "2026-10-23T17:24:52Z",
+  "machine": {
+    "os": "Microsoft Windows 11 Pro",
+    "machine": "AMD64",
+    "python": "3.14.7",
+    "interlink": "0.2.1",
+    "cpu_count": 32,
+    "cpu": "AMD RYZEN AI MAX+ 395 w/ Radeon 8060S",
+    "cores": 16,
+    "threads": 32,
+    "ram_gb": 123.6,
+    "build": "10.0.26200"
+  },
+  "ledger": {
+    "receipts": 5000,
+    "append_total_ms": 4568.5,
+    "append_per_receipt_ms": 0.9137,
+    "verify_ms": 71.2,
+    "verify_receipts_per_s": 70225,
+    "valid": true,
+    "ok": true,
+    "section_ms": 4693.14
+  },
+  "mcp": {
+    "connect_initialize_ms": 2336.26,
+    "list_tools_ms": 7.95,
+    "tools": 9,
+    "protocol": "2026-07-28",
+    "roundtrip_harnesses_ms": {
+      "n": 200,
+      "min": 3.05,
+      "p50": 4.12,
+      "p95": 5.67,
+      "max": 148.63,
+      "mean": 4.99
+    },
+    "mock_lifecycle_ms": {
+      "launch": {
+        "n": 20,
+        "min": 21.6,
+        "p50": 36.01,
+        "p95": 43.8,
+        "max": 51.67,
+        "mean": 35.17
+      },
+      "prompt_e2e": {
+        "n": 20,
+        "min": 309.29,
+        "p50": 481.06,
+        "p95": 514.49,
+        "max": 525.66,
+        "mean": 446.17
+      },
+      "files": {
+        "n": 20,
+        "min": 5.1,
+        "p50": 8.69,
+        "p95": 10.79,
+        "max": 11.53,
+        "mean": 8.4
+      },
+      "evidence": {
+        "n": 20,
+        "min": 10.31,
+        "p50": 16.23,
+        "p95": 19.51,
+        "max": 30.85,
+        "mean": 16.27
+      },
+      "stop_discard": {
+        "n": 20,
+        "min": 16.06,
+        "p50": 27.26,
+        "p95": 32.99,
+        "max": 36.16,
+        "mean": 25.92
+      },
+      "total": {
+        "n": 20,
+        "min": 369.14,
+        "p50": 566.25,
+        "p95": 615.97,
+        "max": 621.85,
+        "mean": 532.09
+      }
+    },
+    "mock_receipt_chain_valid": true,
+    "env_allowlist": {
+      "canary_value_in_any_transcript": false,
+      "declared_secret_redacted_in_transcript": true,
+      "undeclared_child_env_key_count": 25,
+      "undeclared_child_secretish_keys": [],
+      "parent_secretish_key_count": 0,
+      "parent_secretish_keys_leaked_to_child": [],
+      "evidence_env_keys_recorded": true
+    },
+    "live_codex": {
+      "ran": true,
+      "launch_ms": 20.26,
+      "launch_status": "complete",
+      "host_info": {},
+      "prompt_status": "complete",
+      "prompt_e2e_ms": 16839.87,
+      "run_state": "complete",
+      "exit_code": 0,
+      "event_counts": {
+        "interlink": 2,
+        "status": 2,
+        "text": 2,
+        "tool_use": 1,
+        "tool_result": 1,
+        "result": 1
+      },
+      "final_text_tail": "I\u2019ll create the file with the exact text.\nDONE",
+      "errors": [],
+      "files_changed": [
+        {
+          "path": "interlink_ok.txt",
+          "status": "added"
+        }
+      ],
+      "receipt_chain_valid": true,
+      "stop_ms": 12.96,
+      "total_ms": 16901.76
+    },
+    "ok": true,
+    "section_ms": 33728.95
+  },
+  "peer": {
+    "identity_create_ms": 1719.18,
+    "pairing_ms": 1746.09,
+    "fingerprints_match_invites": true,
+    "share_startup_ms": 631.25,
+    "signed_ping_cli_ms": {
+      "n": 10,
+      "min": 566.02,
+      "p50": 644.22,
+      "p95": 707.89,
+      "max": 707.89,
+      "mean": 639.44
+    },
+    "ping_reply": {
+      "approval": "auto",
+      "harnesses": [
+        "mock",
+        "writer"
+      ],
+      "version": "0.2.1"
+    },
+    "signed_hello_inproc_ms": {
+      "n": 40,
+      "min": 2.85,
+      "p50": 16.69,
+      "p95": 30.65,
+      "max": 32.88,
+      "mean": 15.85
+    },
+    "delegated_task_cli_ms": {
+      "n": 5,
+      "min": 1640.55,
+      "p50": 1699.53,
+      "p95": 1723.12,
+      "max": 1723.12,
+      "mean": 1696.14
+    },
+    "delegated_result": {
+      "verified": true,
+      "chain_entries": 4,
+      "files": [
+        [
+          "out.txt",
+          "added"
+        ]
+      ],
+      "out_txt": "HELLO FROM ALICE 4"
+    },
+    "disallowed_harness_refused": true,
+    "rate_limit": {
+      "extra_hellos_accepted_before_429": 49,
+      "refusal": "rate_limited"
+    },
+    "ping_ok_after_window": true,
+    "after_revoke_ping_refused": true,
+    "after_revoke_message": "interlink: revoked: your access to this host was revoked",
+    "host_audit_verify": "{\n  \"valid\": true,\n  \"entries\": 20,\n  \"head\": \"1b45f09a1985acaf9f81215ef21e8c5875e551d06b7f194606cca6a2df555117\"\n}",
+    "client_audit_verify": "{\n  \"valid\": true,\n  \"entries\": 10,\n  \"head\": \"3a0cacdba3f866f93772f04ba73fdfaed22d9b33cea0947299ae9cccdd2609ac\"\n}",
+    "ok": true,
+    "section_ms": 90227.17
+  },
+  "codex_client": {
+    "exit_code": 0,
+    "wall_ms": 30036.11,
+    "config_overrides_only": true,
+    "user_config_written": false,
+    "mcp_tool_calls": [
+      {
+        "server": "interlink_live",
+        "tool": "interlink_harnesses",
+        "status": "completed",
+        "error": false
+      },
+      {
+        "server": "interlink_live",
+        "tool": "interlink_launch",
+        "status": "completed",
+        "error": false
+      },
+      {
+        "server": "interlink_live",
+        "tool": "interlink_prompt",
+        "status": "completed",
+        "error": false
+      },
+      {
+        "server": "interlink_live",
+        "tool": "interlink_evidence",
+        "status": "completed",
+        "error": false
+      },
+      {
+        "server": "interlink_live",
+        "tool": "interlink_stop",
+        "status": "completed",
+        "error": false
+      }
+    ],
+    "interlink_tools_called": [
+      "interlink_harnesses",
+      "interlink_launch",
+      "interlink_prompt",
+      "interlink_evidence",
+      "interlink_stop"
+    ],
+    "final_text": "done turn 1 \u2014 receipt_chain_valid: true",
+    "server_ledger": {
+      "valid": true,
+      "receipts": 6,
+      "head": "830480340a2dc082e59853e137a87cc01714dd4242ed322bc15265bd4ac1b6b6"
+    },
+    "interlink_tools_completed": [
+      "interlink_harnesses",
+      "interlink_launch",
+      "interlink_prompt",
+      "interlink_evidence",
+      "interlink_stop"
+    ],
+    "ok": true,
+    "section_ms": 30049.0
+  },
+  "finished_utc": "2026-10-23T17:27:34Z"
+}

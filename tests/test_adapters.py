@@ -212,6 +212,34 @@ def test_codex_error_events(engine_factory, tmp_path: Path) -> None:
     assert len(errors) == 2 and all("401" in e["message"] for e in errors)
 
 
+def test_codex_shared_home_uses_existing_login(engine_factory, tmp_path: Path) -> None:
+    """isolate_home=false must not redirect CODEX_HOME, or codex can't see the user's login."""
+    exe = make_executable(
+        tmp_path / "bin",
+        "codex",
+        """
+        import json, os, sys
+        sys.stdin.read()
+        print(json.dumps({"type": "thread.started", "thread_id": "t-1"}))
+        seen = os.environ.get("CODEX_HOME", "<unset>")
+        print(json.dumps({"type": "item.completed", "item": {"type": "agent_message", "text": seen}}))
+        print(json.dumps({"type": "turn.completed", "usage": {}}))
+        """,
+    )
+    shared = engine_factory(
+        {"cx": {"adapter": "codex", "command": str(exe), "isolate_home": False}}
+    )
+    iid = shared.launch("cx")["instance_id"]
+    window = run_to_end(shared, iid, "hi")
+    assert window["state"] == "complete"
+    assert window["final_text"] == os.environ.get("CODEX_HOME", "<unset>")
+
+    isolated = engine_factory({"cx": {"adapter": "codex", "command": str(exe)}})
+    iid = isolated.launch("cx")["instance_id"]
+    window = run_to_end(isolated, iid, "hi")
+    assert window["final_text"].endswith(".codex") and window["final_text"] != "<unset>"
+
+
 # -- hermes (fake binary that validates flags) ---------------------------------------------
 
 

@@ -1,0 +1,119 @@
+{
+  "generated_at": "2026-10-23T17:25:06+00:00",
+  "instance": {
+    "adapter": "mock",
+    "created": 1792776305.7001624,
+    "env_keys": [
+      "APPDATA",
+      "COMSPEC",
+      "HOME",
+      "INTERLINK_INSTANCE_ID",
+      "INTERLINK_WORKSPACE",
+      "LOCALAPPDATA",
+      "NO_COLOR",
+      "NUMBER_OF_PROCESSORS",
+      "PATH",
+      "PATHEXT",
+      "PROCESSOR_ARCHITECTURE",
+      "PYTHONDONTWRITEBYTECODE",
+      "PYTHONIOENCODING",
+      "PYTHONUTF8",
+      "SYSTEMDRIVE",
+      "SYSTEMROOT",
+      "TEMP",
+      "TMP",
+      "TMPDIR",
+      "USERPROFILE",
+      "WINDIR",
+      "XDG_CACHE_HOME",
+      "XDG_CONFIG_HOME",
+      "XDG_DATA_HOME",
+      "XDG_STATE_HOME"
+    ],
+    "harness": "mock",
+    "host": {},
+    "id": "45825dbf-7456-457a-8e33-42c525bc3d91",
+    "kind": "command",
+    "label": "mock",
+    "secret_keys": [],
+    "seed": {
+      "files": 1,
+      "files_total": 1
+    },
+    "state": "ready"
+  },
+  "interlink": {
+    "platform": "win32-py3.14",
+    "server_id": "9ecb30a7-2702-4311-aafb-7d85e88e3f04",
+    "version": "0.2.1"
+  },
+  "omitted": [
+    "prompt text (sha256 only)",
+    "raw stdout/stderr logs",
+    "environment values"
+  ],
+  "receipt_chain": {
+    "head": "cf29351a581cd1a70064797713699c04c7673e65d7c532198a34158cf31435f2",
+    "receipts": 4,
+    "valid": true
+  },
+  "receipts": [
+    {
+      "at": 1792776305.715676,
+      "hash": "f2ec51ccdd7d97ccd6a9c1d785f8ad99ffa9ab7b87e69dde146c52887db8a694",
+      "kind": "launched",
+      "sequence": 2
+    },
+    {
+      "at": 1792776305.734292,
+      "hash": "3e4cfa5fdefaa4d9f02a784352dcc25709ab8d822c8b281b952b411ff91b5aa4",
+      "kind": "prompt_submitted",
+      "sequence": 3
+    },
+    {
+      "at": 1792776306.231377,
+      "hash": "cf29351a581cd1a70064797713699c04c7673e65d7c532198a34158cf31435f2",
+      "kind": "run_finished",
+      "sequence": 4
+    }
+  ],
+  "runs": [
+    {
+      "detail": {
+        "duration_s": 0.474,
+        "pid": 17996
+      },
+      "event_counts": {
+        "interlink": 2,
+        "result": 1,
+        "status": 1,
+        "text": 1,
+        "tool_result": 1,
+        "tool_use": 1
+      },
+      "events_sha256": "a55e4532c0d56d6aa3a5d4c5a27e79e4bca5dd246b43047aacccde5053e99023",
+      "exit_code": 0,
+      "finished": 1792776306.213041,
+      "prompt_sha256": "f490bb66ed301eb0e9971ae8b243a2f94a5a7653e516392a47357c8e1b0c7e69",
+      "run_id": "81420410-f037-4611-9501-12f70f52296a",
+      "started": 1792776305.7286623,
+      "state": "complete",
+      "timeout_s": 600.0
+    }
+  ],
+  "schema": "interlink-evidence/1",
+  "truncated": [],
+  "unresolved_requests": [],
+  "workspace": {
+    "added": [
+      {
+        "path": "hello.txt",
+        "sha256": "c641344867e9806fadfd219f25b62b97c94db0eed04a1d79e93676533cfb782b",
+        "size": 9
+      }
+    ],
+    "deleted": [],
+    "files_total": 2,
+    "modified": []
+  }
+}

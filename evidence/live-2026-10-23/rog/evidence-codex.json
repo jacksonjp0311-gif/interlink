@@ -1,0 +1,110 @@
+{
+  "generated_at": "2026-10-23T17:25:33+00:00",
+  "instance": {
+    "adapter": "codex",
+    "created": 1792776316.969442,
+    "env_keys": [
+      "COMSPEC",
+      "INTERLINK_INSTANCE_ID",
+      "INTERLINK_WORKSPACE",
+      "NO_COLOR",
+      "NUMBER_OF_PROCESSORS",
+      "PATH",
+      "PATHEXT",
+      "PROCESSOR_ARCHITECTURE",
+      "PYTHONDONTWRITEBYTECODE",
+      "PYTHONIOENCODING",
+      "PYTHONUTF8",
+      "SYSTEMDRIVE",
+      "SYSTEMROOT",
+      "TEMP",
+      "TMP",
+      "TMPDIR",
+      "WINDIR"
+    ],
+    "harness": "codex",
+    "host": {},
+    "id": "87e0fc91-6330-4913-b511-e71182e09eb1",
+    "kind": "command",
+    "label": "codex",
+    "secret_keys": [],
+    "seed": {
+      "files_total": 0
+    },
+    "state": "ready"
+  },
+  "interlink": {
+    "platform": "win32-py3.14",
+    "server_id": "9ecb30a7-2702-4311-aafb-7d85e88e3f04",
+    "version": "0.2.1"
+  },
+  "omitted": [
+    "prompt text (sha256 only)",
+    "raw stdout/stderr logs",
+    "environment values"
+  ],
+  "receipt_chain": {
+    "head": "320ddf098ef5e5b715143607c1ec4f63e92ae3a8e61a9f00f1a3a3c259e932e4",
+    "receipts": 113,
+    "valid": true
+  },
+  "receipts": [
+    {
+      "at": 1792776316.977457,
+      "hash": "4d5c698a2acc9dc1f3a64d08c9a45583ed5472b7b8d6ce3cf42e57d2b96669e1",
+      "kind": "launched",
+      "sequence": 111
+    },
+    {
+      "at": 1792776316.988916,
+      "hash": "c6008f92801d0cc96b21f6bef03237da651e7281df40c0d01a1bae588662f449",
+      "kind": "prompt_submitted",
+      "sequence": 112
+    },
+    {
+      "at": 1792776333.811788,
+      "hash": "320ddf098ef5e5b715143607c1ec4f63e92ae3a8e61a9f00f1a3a3c259e932e4",
+      "kind": "run_finished",
+      "sequence": 113
+    }
+  ],
+  "runs": [
+    {
+      "detail": {
+        "duration_s": 16.814,
+        "pid": 66356
+      },
+      "event_counts": {
+        "interlink": 2,
+        "result": 1,
+        "status": 2,
+        "text": 2,
+        "tool_result": 1,
+        "tool_use": 1
+      },
+      "events_sha256": "471cd1417fc51886c6f8390d5d6a804bc0240d1950cfd49ece93b305173b1e9a",
+      "exit_code": 0,
+      "finished": 1792776333.8055673,
+      "prompt_sha256": "05fc0f91d50a76e0c2f89f685e8c244e33be4e59e61618d65aa94fd1b2a0f7ab",
+      "run_id": "f280efa4-cc1b-4b24-b9ae-59ff535de67f",
+      "started": 1792776316.9843597,
+      "state": "complete",
+      "timeout_s": 600.0
+    }
+  ],
+  "schema": "interlink-evidence/1",
+  "truncated": [],
+  "unresolved_requests": [],
+  "workspace": {
+    "added": [
+      {
+        "path": "interlink_ok.txt",
+        "sha256": "0e2a592c9b7d520f4ab370579fdee8f8d88368d9da1a7456603dc8abae7a9b67",
+        "size": 7
+      }
+    ],
+    "deleted": [],
+    "files_total": 1,
+    "modified": []
+  }
+}

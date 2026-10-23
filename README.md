@@ -42,6 +42,7 @@ you ──► Claude Code ──(MCP)──► Interlink ──► Codex / Herme
 - [Add your own agent](#add-your-own-agent)
 - [Connect with a friend](#connect-with-a-friend)
 - [The CLI](#the-cli)
+- [Live validation & benchmarks](#live-validation--benchmarks)
 - [Safety model](#safety-model)
 - [FAQ](#faq)
 - [Contributing](#contributing) · [Credits](#credits) · [License](#license)
@@ -110,6 +111,9 @@ command = "/path/to/.venv/bin/interlink"
 args = ["serve"]
 tool_timeout_sec = 120
 ```
+
+If you use non-interactive `codex exec`, also add `default_tools_approval_mode = "approve"`.
+Otherwise `exec` cancels MCP tool calls, because it can't ask you to approve them.
 
 Then just ask:
 
@@ -306,6 +310,41 @@ Threat model and limits: [docs/SECURITY.md](docs/SECURITY.md).
 
 Prefer Python? [examples/drive_mock.py](examples/drive_mock.py) drives the server with
 the official MCP client in ~50 lines.
+
+## Live validation & benchmarks
+
+On 2026-10-23, v0.2.2 was run live on a Windows 11 laptop (Ryzen AI MAX+ 395) and a Linux
+box (8-vCPU Xeon). The full signed evidence package is in
+[`evidence/live-2026-10-23/`](evidence/live-2026-10-23/).
+
+| What ran | Result |
+|---|---|
+| Test suite | Windows: 180 passed, 15 skipped (POSIX-only). Linux: 195 passed |
+| **Real Codex turn** through Interlink, using the existing login (`isolate_home = false`) | Completed in 16.8 s, wrote the file, exit 0, receipt chain valid |
+| **Codex as the MCP client** (wired in with `-c` overrides; your `~/.codex/config.toml` is untouched) | harnesses → launch → prompt → evidence → stop: all completed |
+| **PEGASUS host**, real boot from a disposable copy | Launched in 6.0 s with source and build digests. The prompt was refused (inference off), as designed |
+| Peer mode (Ed25519) | Signed results verified. Disallowed harness, rate limit (429) and revoke all refused correctly. Audit chains valid |
+| Env allow-list | Canary never reached the child, declared secret redacted, 0 secret-like variables leaked |
+| Hermes / Claude Code | Skipped: the Hermes install is broken / Claude Code isn't installed |
+
+| Median | Windows laptop | Linux box |
+|---|---:|---:|
+| MCP tool round-trip (n=200) | 4.1 ms | 1.5 ms |
+| Full mock lifecycle: launch → prompt → files → evidence → stop | 566 ms | 79 ms |
+| Ledger append / verify (5,000 receipts) | 0.91 ms / 70k per s | 0.10 ms / 167k per s |
+| Signed peer hello, in-process | 16.7 ms | 1.7 ms |
+| Delegated peer task, CLI end-to-end | 1.70 s | 1.23 s |
+
+The laptop ran from a OneDrive-synced Desktop folder, which explains most of the
+gap. To check the package (manifest signature, file hashes, signed peer results, audit
+chains and ledgers):
+
+```bash
+python evidence/live-2026-10-23/verify.py   # -> ALL CHECKS PASSED
+```
+
+The signing key is single-use, and its private half was never stored. Public key:
+`59216a9b14e11e168163173565cd232b8673de8c4823dd5c5ec5eadc2edfcd5c`.
 
 ## Safety model
 

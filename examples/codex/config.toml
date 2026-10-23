@@ -6,4 +6,6 @@ command = "interlink"
 args = ["serve"]
 startup_timeout_sec = 20
 tool_timeout_sec = 120
+# Needed for non-interactive `codex exec`, which otherwise cancels MCP tool calls:
+# default_tools_approval_mode = "approve"
 # env = { INTERLINK_CONFIG = "/path/to/interlink.toml" }

@@ -1,0 +1,165 @@
+{
+  "schema": "interlink-live-report/1",
+  "started_utc": "2026-10-23T17:31:24Z",
+  "machine": {
+    "os": "Linux-6.12.94+-x86_64-with-glibc2.41",
+    "machine": "x86_64",
+    "python": "3.13.5",
+    "interlink": "0.2.1",
+    "cpu_count": 8,
+    "cpu": "Intel(R) Xeon(R) Processor",
+    "ram_gb": 15.6
+  },
+  "ledger": {
+    "receipts": 5000,
+    "append_total_ms": 502.85,
+    "append_per_receipt_ms": 0.1006,
+    "verify_ms": 29.95,
+    "verify_receipts_per_s": 166945,
+    "valid": true,
+    "ok": true,
+    "section_ms": 544.2
+  },
+  "mcp": {
+    "connect_initialize_ms": 651.85,
+    "list_tools_ms": 3.75,
+    "tools": 9,
+    "protocol": "2026-07-28",
+    "roundtrip_harnesses_ms": {
+      "n": 200,
+      "min": 0.85,
+      "p50": 1.45,
+      "p95": 2.46,
+      "max": 38.5,
+      "mean": 1.71
+    },
+    "mock_lifecycle_ms": {
+      "launch": {
+        "n": 20,
+        "min": 3.85,
+        "p50": 5.74,
+        "p95": 8.16,
+        "max": 8.22,
+        "mean": 5.65
+      },
+      "prompt_e2e": {
+        "n": 20,
+        "min": 57.86,
+        "p50": 60.13,
+        "p95": 62.98,
+        "max": 65.46,
+        "mean": 60.36
+      },
+      "files": {
+        "n": 20,
+        "min": 2.48,
+        "p50": 3.14,
+        "p95": 3.88,
+        "max": 4.07,
+        "mean": 3.11
+      },
+      "evidence": {
+        "n": 20,
+        "min": 4.02,
+        "p50": 5.65,
+        "p95": 6.71,
+        "max": 6.88,
+        "mean": 5.51
+      },
+      "stop_discard": {
+        "n": 20,
+        "min": 3.74,
+        "p50": 4.89,
+        "p95": 6.22,
+        "max": 7.24,
+        "mean": 4.98
+      },
+      "total": {
+        "n": 20,
+        "min": 73.34,
+        "p50": 78.89,
+        "p95": 85.09,
+        "max": 86.57,
+        "mean": 79.66
+      }
+    },
+    "mock_receipt_chain_valid": true,
+    "env_allowlist": {
+      "canary_value_in_any_transcript": false,
+      "declared_secret_redacted_in_transcript": true,
+      "undeclared_child_env_key_count": 19,
+      "undeclared_child_secretish_keys": [],
+      "parent_secretish_key_count": 3,
+      "parent_secretish_keys_leaked_to_child": [],
+      "evidence_env_keys_recorded": true
+    },
+    "ok": true,
+    "section_ms": 3335.66
+  },
+  "peer": {
+    "identity_create_ms": 364.6,
+    "pairing_ms": 403.14,
+    "fingerprints_match_invites": true,
+    "share_startup_ms": 171.54,
+    "signed_ping_cli_ms": {
+      "n": 10,
+      "min": 192.38,
+      "p50": 205.82,
+      "p95": 216.05,
+      "max": 216.05,
+      "mean": 205.8
+    },
+    "ping_reply": {
+      "approval": "auto",
+      "harnesses": [
+        "mock",
+        "writer"
+      ],
+      "version": "0.2.1"
+    },
+    "signed_hello_inproc_ms": {
+      "n": 40,
+      "min": 1.4,
+      "p50": 1.74,
+      "p95": 2.36,
+      "max": 4.23,
+      "mean": 1.85
+    },
+    "delegated_task_cli_ms": {
+      "n": 5,
+      "min": 1221.67,
+      "p50": 1226.11,
+      "p95": 1238.64,
+      "max": 1238.64,
+      "mean": 1228.85
+    },
+    "delegated_result": {
+      "verified": true,
+      "chain_entries": 4,
+      "files": [
+        [
+          "out.txt",
+          "added"
+        ]
+      ],
+      "out_txt": "HELLO FROM ALICE 4"
+    },
+    "disallowed_harness_refused": true,
+    "rate_limit": {
+      "extra_hellos_accepted_before_429": 49,
+      "refusal": "rate_limited"
+    },
+    "ping_ok_after_window": true,
+    "after_revoke_ping_refused": true,
+    "after_revoke_message": "interlink: revoked: your access to this host was revoked",
+    "host_audit_verify": "{\n  \"valid\": true,\n  \"entries\": 20,\n  \"head\": \"bb6c37b1ffe4adc405cfe75c1977381d87fac25875d86c306feeda07355faf7d\"\n}",
+    "client_audit_verify": "{\n  \"valid\": true,\n  \"entries\": 10,\n  \"head\": \"3e1514442da7b2ec2c892b5fb34715bb18694064fc2926a976382fc2e412dc66\"\n}",
+    "ok": true,
+    "section_ms": 75486.05
+  },
+  "codex_client": {
+    "skipped": true,
+    "reason": "no Codex CLI/login on the Linux box; run live on the Windows laptop"
+  },
+  "finished_utc": "2026-10-23T17:32:43Z"
+}
