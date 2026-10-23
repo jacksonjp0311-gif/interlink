@@ -24,6 +24,8 @@ AUTO_DETECT = {"hermes": "hermes", "claude-code": "claude", "codex": "codex"}
 
 
 class ServerSettings(BaseModel):
+    """The ``[server]`` table: state root, limits and auto-detection."""
+
     model_config = ConfigDict(extra="forbid")
 
     state_root: str | None = None
@@ -35,11 +37,15 @@ class ServerSettings(BaseModel):
 
 
 class ConfigError(ValueError):
+    """The configuration file is missing, unreadable or invalid."""
+
     pass
 
 
 @dataclass
 class Config:
+    """A loaded configuration: server settings plus one adapter per harness."""
+
     server: ServerSettings
     harnesses: dict[str, HarnessAdapter]
     source: Path | None = None
@@ -47,12 +53,14 @@ class Config:
 
     @property
     def state_root(self) -> Path:
+        """Where instances and ledgers live (``[server] state_root`` or the default)."""
         if self.server.state_root:
             return Path(os.path.expandvars(self.server.state_root)).expanduser().resolve()
         return default_state_root()
 
 
 def default_state_root() -> Path:
+    """``$INTERLINK_STATE``, else the platform's user state directory."""
     if env := os.environ.get("INTERLINK_STATE"):
         return Path(env).expanduser().resolve()
     if IS_WINDOWS:
@@ -63,6 +71,7 @@ def default_state_root() -> Path:
 
 
 def user_config_path() -> Path:
+    """The per-user config file location for this platform."""
     if IS_WINDOWS:
         base = Path(os.environ.get("APPDATA") or Path.home() / "AppData" / "Roaming")
     else:
@@ -71,6 +80,7 @@ def user_config_path() -> Path:
 
 
 def find_config(explicit: str | os.PathLike[str] | None = None) -> Path | None:
+    """The first config file found: explicit path, ``$INTERLINK_CONFIG``, ``./interlink.toml``, user config."""
     if explicit:
         path = Path(explicit).expanduser()
         if not path.is_file():
@@ -85,6 +95,7 @@ def find_config(explicit: str | os.PathLike[str] | None = None) -> Path | None:
 
 
 def parse(data: dict[str, Any], source: Path | None = None) -> Config:
+    """Validate a parsed TOML mapping and build its adapters."""
     unknown = set(data) - {"server", "harness"}
     if unknown:
         raise ConfigError(f"unknown top-level table(s): {', '.join(sorted(unknown))}")
@@ -116,6 +127,7 @@ def parse(data: dict[str, Any], source: Path | None = None) -> Config:
 
 
 def load(explicit: str | os.PathLike[str] | None = None) -> Config:
+    """Find, read and parse the config (built-in defaults when there is none)."""
     path = find_config(explicit)
     if path is None:
         return parse({})
@@ -128,7 +140,7 @@ def load(explicit: str | os.PathLike[str] | None = None) -> Config:
 
 EXAMPLE = """\
 # interlink.toml - which agent harnesses Interlink may launch, and how.
-# Docs: https://github.com/jacksonjp0311-gif/interlink#configuration
+# Docs: https://github.com/jacksonjp0311-gif/interlink#configure-your-harnesses
 
 [server]
 # state_root = "~/.local/state/interlink"   # where throwaway workspaces live
