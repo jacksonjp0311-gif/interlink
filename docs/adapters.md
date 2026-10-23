@@ -93,6 +93,6 @@ complete, tested example.
 |---------|----------------|
 | `mock`, `command` | Real processes, full suite, every platform in CI. |
 | `claude-code` | Recorded stream fixtures + argv/env assertions; the real `claude` 2.1 CLI was exercised unauthenticated. `max_turns` maps to `--max-turns`, which current `claude --help` does not list - verify on your version. |
-| `codex` | Recorded fixtures + argv assertions; the real `codex` 0.163 CLI was exercised unauthenticated. |
+| `codex` | Recorded fixtures + argv assertions. **Live** (2026-10-23, Windows): a real logged-in `codex exec` turn with `isolate_home = false`, and Codex as the MCP client driving Interlink. See [the evidence](../evidence/live-2026-10-23/). |
 | `hermes` | A faithful fake CLI in `tests/fakes/`. Flags follow Hermes docs; not yet run against a live Hermes. |
-| `pegasus` | A fake PEGASUS host that enforces the real protocol (boot schema, source digest, tokens, leases, deadlines) over a Unix-socket test seam. The real host uses a Windows named pipe and has not been driven by this package's CI. |
+| `pegasus` | A fake PEGASUS host that enforces the real protocol (boot schema, source digest, tokens, leases, deadlines) over a Unix-socket test seam. The real host uses a Windows named pipe and isn't driven by CI. **Live** (2026-10-23): the real PEGASUS host booted from a disposable copy and refused a prompt with inference off, as designed. A full inference task hasn't been run yet. |

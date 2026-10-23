@@ -232,8 +232,10 @@ entry point. See [docs/adapters.md](docs/adapters.md).
 
 Got a friend with a beefier machine or a harness you don't have? Hand them a task.
 Their Interlink runs it in a sandbox and sends back a **signed result**: the answer,
-the files the agent wrote, and proof of exactly what ran. Neither of you ever gets
-access to the other's machine, files or keys.
+the files the agent wrote, and proof of exactly what ran. Your friend never gets a
+shell, your keys or your logins, and you choose which agents they may run. (Interlink
+isn't an OS sandbox, so only lend agents you'd trust on your machine. See
+[docs/SECURITY.md](docs/SECURITY.md#non-goals-and-known-limits).)
 
 ```mermaid
 sequenceDiagram
@@ -322,10 +324,10 @@ box (8-vCPU Xeon). The full signed evidence package is in
 | Test suite | Windows: 180 passed, 15 skipped (POSIX-only). Linux: 195 passed |
 | **Real Codex turn** through Interlink, using the existing login (`isolate_home = false`) | Completed in 16.8 s, wrote the file, exit 0, receipt chain valid |
 | **Codex as the MCP client** (wired in with `-c` overrides; your `~/.codex/config.toml` is untouched) | harnesses → launch → prompt → evidence → stop: all completed |
-| **PEGASUS host**, real boot from a disposable copy | Launched in 6.0 s with source and build digests. The prompt was refused (inference off), as designed |
+| **PEGASUS host**, real boot from a disposable copy | Launched in 6.0 s with source and build digests. Inference was left off, so the prompt was refused as designed: a full PEGASUS task hasn't been run yet |
 | Peer mode (Ed25519) | Signed results verified. Disallowed harness, rate limit (429) and revoke all refused correctly. Audit chains valid |
 | Env allow-list | Canary never reached the child, declared secret redacted, 0 secret-like variables leaked |
-| Hermes / Claude Code | Skipped: the Hermes install is broken / Claude Code isn't installed |
+| Hermes / Claude Code | **Not live-tested yet.** Hermes was broken on that laptop and Claude Code wasn't installed. Both are covered by fakes and recorded fixtures in the test suite |
 
 | Median | Windows laptop | Linux box |
 |---|---:|---:|
@@ -367,8 +369,8 @@ Interlink is designed so that "let an agent run an agent" is boring.
 
 ## FAQ
 
-**Does it work on Windows?** It's built for Windows, macOS and Linux, and CI is set up for
-all three. On Windows, install with `pip install -e ".[windows]"` for Job-object
+**Does it work on Windows?** Yes. It's built for Windows, macOS and Linux, and CI runs the
+full suite on all three. On Windows, install with `pip install -e ".[windows]"` for Job-object
 process-tree kills. The PEGASUS adapter is Windows-only (it speaks PEGASUS's named-pipe
 protocol).
 

@@ -1,7 +1,7 @@
 # Peer connections
 
 Peer connections let you hand a task to a friend's Interlink and get a **signed, verified
-result** back. Neither of you can touch the other's machine, files or keys. This page is
+result** back. Your friend never gets a shell, your keys or your logins. This page is
 the full guide and the wire protocol. The threat model is in [SECURITY.md](SECURITY.md).
 
 - [Setup, step by step](#setup-step-by-step)

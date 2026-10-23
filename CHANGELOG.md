@@ -8,7 +8,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [0.2.2] - 2026-10-23
 
-Live-validated on Windows and Linux with real Codex and a real PEGASUS host.
+Live-validated on Windows and Linux with real Codex and a real PEGASUS host boot (inference
+off). Hermes and Claude Code were not live-tested.
 
 ### Fixed
 - Codex adapter: with `isolate_home = false`, Interlink no longer sets `CODEX_HOME`, so
